@@ -1,351 +1,295 @@
 $(document).ready(function() {
+    var eventDivs = $('.event');
+    var currentIndex = 0;
+    var moveBoxes = false;
+    var isActive = false;
+    var secondIndex = 1;
+    var thirdIndex = 2;
+    var fourthIndex = 3;
+    var eventClicked = false;
+  
+  
+    var mouseMove = function(e) {
+      var static = 'images/suyat/output-onlinegiftoolsStatic.png';
+      var gif = 'images/suyat/output-onlinegiftools.gif'; // Ensure this GIF loops forever
+  
+      var motionStatic = 'images/motion/motionStatic.jpg';
+      var motionGif = 'images/motion/motion.gif'; // Ensure this GIF loops forever
 
-  var eventDivs = $('.event');
-  var currentIndex = 0;
-  var isActive = false;
-  var secondIndex = 1;
-  var thirdIndex = 2;
-  var fourthIndex = 3;
+      var HMstatic = 'images/hotMess/hotMess.jpg';
+      var HMGif = 'images/hotMess/hotmess.gif';
+    
+      $('#suyat').hover(
 
-  //---- this changes bg to whatever image you click -----------------
+        function() {
+            // console.log("Hovering over #suyat");
+            $(this).find('.suyatGif').attr('src', gif);
+        },
+        function() {
+            $(this).find('.suyatGif').attr('src', static);
+        }
+      );
+  
+      $('#takahashi_kuan').hover(
+        function() {
+            $(this).find('.DucGIF').attr('src', motionGif);
+        },
+        function() {
+            $(this).find('.DucGIF').attr('src', motionStatic);
+        }
+      );
 
-  $('.images img').on('click', function() {
-    var imageUrl = $(this).attr('src');
+      $('#sebastian_aubin').hover(
+        function() {
+            $(this).find('.hotMessGif').attr('src', HMGif);
+        },
+        function() {
+            $(this).find('.hotMessGif').attr('src', HMstatic);
+        }
+        );
+  
+      var mouseFollow = function() {
 
-    $('body').css('background-image', 'url(' + imageUrl + ')');
-});
-// -------------------------------------------------------------------------
+//------------- title following mouse -------------------------
+        // var mouseX = e.pageX;
+        // var mouseY = e.pageY;
+  
+        // var gdElement = $('.GD');
+        // var gdX = gdElement.offset().left;
+        // var gdY = gdElement.offset().top;
+  
+        // var gdXdistanceFromMiddle = Math.abs(mouseX - gdX) - gdElement.width() / 2;
+        // var gdYdistanceFromMiddle = Math.abs(mouseY - gdY) - gdElement.height() / 2;
+  
+        // var newgdX = gdX - gdXdistanceFromMiddle;
+        // var newgdY = gdY - gdYdistanceFromMiddle;
+  
+        // $('.GD').css({
+        //     "top": newgdY / 25 + "px",
+        //     "left": newgdX / 25 + "px",
+        // });
+  //------------- title following mouse -------------------------
 
-      $(document).on('mousemove', function(e) {
-
-        var mouseX = e.pageX;
-        var mouseY = e.pageY;
-
-// -------------------------------this makes GD move-------------------------------------
-        var gdElement = $('.GD');
-        var gdX = gdElement.offset().left;
-        var gdY = gdElement.offset().top;
-
-
-        // asking chat to calculate the distance between the mouse and the middle of .GD element
-        var gdXdistanceFromMiddle = Math.abs(mouseX - gdX) - gdElement.width()/2;
-        var gdYdistanceFromMiddle = Math.abs(mouseY - gdY) -  gdElement.height()/2;
-
-
-        var newgdX = gdX -  gdXdistanceFromMiddle;
-        var newgdY = gdY -  gdYdistanceFromMiddle ;
-
-        console.log("gd x distance",gdXdistanceFromMiddle)
-        console.log("gd y distance",gdYdistanceFromMiddle)
-
-
-        $('.GD').css({
-          "top": newgdY/50 + "px",
-          "left": newgdX/50 + "px",
-        })
-
-        // ----------------------- this makes divs follow cursor  --------------------------------
-
-        //chat helped figure out arrays
-      
+  
         if (!isActive) {
-          var $currentEventDiv = $(eventDivs[currentIndex]);
-          var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
-          var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
-    
-          $currentEventDiv.css({
-            "top": topPos + "px",
-            "left": leftPos + "px",
-            "z-index": 9999,
-            "font-family": "RedactionReg",
-            "font-size": "8pt",
-            "line-height": "12pt",
-            "text-decoration": "none",
-            // "height": "30vh",
-            // "width": "35em"
-          });
-    
-          //making the divs go back to their original size on mouseleave//
-    
-          $('#anther_kiley').css({
-            'height': '26vh'
-          })
-    
-          $('#takahashi_kuan').css({
-            'height': '32vh'
-          })
-    
-          $('#e_roon_kang').css({
-            'height': '32vh'
-          })
-    
-          $('#sebastian_aubin').css({
-            'height': '28vh'
-          })
-    
-          $(eventDivs[currentIndex]).css({
-            // "background-color": "black",
-            "transform":"scale(1)",
-            "cursor": "nesw-resize",
-            "overflow": "scroll"
-          });
-          
-          $(eventDivs[secondIndex]).css({
-            // "background-color": "blue",
-            "transform":"scale(0.65)",
-            "cursor": "nesw-resize",
-            "overflow": "hidden"
-          });
-    
-          $(eventDivs[thirdIndex]).css({
-            // "background-color": "red",
-            "transform":"scale(0.75)",
-            "cursor": "nesw-resize",
-            "overflow": "hidden"
-          });
-    
-          $(eventDivs[fourthIndex]).css({
-            // "background-color": "green",
-            "transform":"scale(0.85)",
-            "cursor": "nesw-resize",
-            "overflow": "hidden"
-          });
-    
-          currentIndex = (currentIndex + 1) % eventDivs.length;
-          secondIndex = (secondIndex + 1) % eventDivs.length;
-          thirdIndex = (thirdIndex + 1) % eventDivs.length;
-          fourthIndex = (fourthIndex + 1) % eventDivs.length;
-          isActive = true;
+            var $currentEventDiv = $(eventDivs[currentIndex]);
+            var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
+            var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
+  
+            $currentEventDiv.css({
+                "top": topPos + "px",
+                "left": leftPos + "px",
+                "z-index": 999,
+                "font-family": "RedactionReg",
+                "font-size": "8pt",
+                "line-height": "12pt",
+                "text-decoration": "none",
+            });
+  
+            $(eventDivs[currentIndex]).css({
+                "transform": "scale(1)",
+            });
+  
+            $(eventDivs[secondIndex]).css({
+                "transform": "scale(0.5)",
+                "overflow": "hidden"
+            });
+  
+            $(eventDivs[thirdIndex]).css({
+                "transform": "scale(0.75)",
+                "overflow": "hidden"
+            });
+  
+            $(eventDivs[fourthIndex]).css({
+                "transform": "scale(0.85)",
+                "overflow": "hidden"
+            });
+  
+            currentIndex = (currentIndex + 1) % eventDivs.length;
+            secondIndex = (secondIndex + 1) % eventDivs.length;
+            thirdIndex = (thirdIndex + 1) % eventDivs.length;
+            fourthIndex = (fourthIndex + 1) % eventDivs.length;
+            isActive = true;
+            eventClicked = false;
         }
-      });
-    
-      
-    
-      $('.event').on('mouseleave', function() {
-        isActive = false;
-    
-        $('.event').css({
-          "z-index": 1,
-        });
+      };
+      mouseFollow();
+    };
+  
+    $(document).on('mousemove', mouseMove);
 
-        $("body").css({
-          'background-image': "none"
-        })
-    
-      $(this).animate({ scrollTop: 0 }, 'fast');
-    });
-    
-    //------------------------- this expands divs ----------------------------------------
-    
-    
-      $('.event').on('click', function() {
-    
-        $(eventDivs[fourthIndex]).css({
-          'height': 'auto'
-        });
-    
-        $("section:hover").css({
-          "cursor": "default"
-        })
-    
-    //----Help from Ali
-    
-        var expandingDiv = $(eventDivs[fourthIndex])
-        var bodyWidth = $('body').width();
-        var bodyHeight = $('body').height();
-        var expandingDivOffset = {
-              "top":expandingDiv.offset().top,
-              "bottom":expandingDiv.offset().top + expandingDiv.height(),
-              "left":expandingDiv.offset().left,
-              "right":expandingDiv.offset().left + expandingDiv.width()
-            }
-    
-            // console.log(expandingDivOffset)
-          
+
+  
+    $('.event').on('mouseleave', function() {
+        if (!moveBoxes) {
+            // $('.GD').text("Portfolio!");
+            isActive = false;
+  
+            // $(".close").css({
+            //     'opacity': '0',
+            // });
+  
+            $('.event').css({
+                "z-index": 1,
+            });
+  
+            // $("body").css({
+            //     'background-image': "none"
+            // });
+        }
+
+
+
+
+        var topEvent = $(this).attr('id');
+
+        if (topEvent === 'suyat') {
+            $('.name').text('"Motion Studies"')
+        }
+
+        if (topEvent === 'takahashi_kuan') {
+            $('.name').text('"Sirius"')
+        }
+
+        if (topEvent === 'e_roon_kang') {
+            $('.name').text('"Hot Mess"')
+        }
+
+        if (topEvent === 'sebastian_aubin') {
+            $('.name').text('"Suyat Scripts"')
+        }
+
         
-        if (expandingDivOffset.left < 0 ){
-          expandingDiv.css({ 
-            "left": "0px"
-           })
-        }
-    
-        if (expandingDivOffset.right > bodyWidth){
-          expandingDiv.css({ 
-            "left": "auto",
-            "right":"0px"
-           })
-        }
-    
-        if (expandingDivOffset.bottom > bodyHeight){
-          expandingDiv.css({ 
-            "top":"auto",
-            "bottom": "0px"
-          })
-        }
+    });
+  
+    $('.event').on('click', function() {
 
-        if (expandingDivOffset.top < 0){
-          expandingDiv.css({ 
-            "top":"0px",
-            "bottom": "auto"
-           })
-        }
-    
-      });
+        var eventID = $(this).attr('id');
+  
+        if (!eventClicked) {
 
+            if (eventID === 'suyat') {
+                console.log("WORKS");
+                window.location.href = 'booksIndex.html'; // Link to suyatindex.html
+            }
+
+            //----------------------------------------- MOTION I-frame-------------------------
+  
+            if (eventID === 'takahashi_kuan') {
+                console.log("Takahashi");
+  
+                window.location.href = 'motionIndex.html'; // Link to suyatindex.html
+            
+            }
+
+            if (eventID === 'sebastian_aubin') {
+                console.log("Seb");
+  
+                window.location.href = 'hotmessIndex.html'; // Link to suyatindex.html
+            
+            }
+            
+        }
+  
+        eventClicked = true;
+    });
+  
+    var currentHeight = $(eventDivs[fourthIndex]).height();
+    $(eventDivs[fourthIndex]).height(currentHeight);
+  
+    if ($(eventDivs[fourthIndex]).height() > 33 * $(window).height() / 100) {
+        $(eventDivs).draggable();
+  
+        $('.event').css({
+            'position': 'fixed',
+        });
+    }
+  
+    // $('.event').on('click', function() {
+    //     var eventID = $(this).attr('id');
+  
+    //     var textMappings = {
+    //         'takahashi_kuan': 'Text for Emi Takahashi & Michelle Kuan',
+    //         'e_roon_kang': 'Text for E Roon Kang',
+    //         'sebastian_aubin': 'Text for Sebastian Aubin',
+    //         'suyat': 'SUYAT',
+    //     };
+  
+    //     if ($(this).is(eventDivs[fourthIndex])) {
+    //         $('.GD').text(textMappings[eventID]);
+    //     }
+    // });
   });
 
 
 
 
-// -------------- add this before GD section to make RM and LS move--------------------
-//         // Get the position of the .LS element
-//         var lsElement = $('.LS');
-//         var lsX = lsElement.offset().left;
-//         var lsY = lsElement.offset().top;
-    
-//         var distanceX = Math.abs(mouseX - lsX);
-//         var distanceY = Math.abs(mouseY - lsY);
 
+  //----------------iframe stuff---------------------
 
-// // ---------------------------------------------------------------------------------------------------
-//         var newX = lsX -  (distanceX / 8);
-//         var newY = lsY -  (distanceY / 8);
+            //   var iframeContainer = $('<div class="iframe-container"></div>').css({
+            //     'width': '93%',
+            //     'height': '100%',
+            //     'z-index': '9999',
+            //     'position': 'fixed',
+            //     'padding-left': '30px',
+            //     'top': '50%',
+            //     'left': '50%',
+            //     'transform': 'translate(-50%, -50%)',
+            //     'background-color': '#fff',
+            //     'border-left': '1px solid black',
+            // });
 
+            // var closeButton = $('<button class="close-button" title="back">&#x261C;</button>').css({
+            //     position: 'absolute',
+            //     left: '0px',
+            //     'margin-top': '20px',
+            //     // 'border': 'red 1px solid',
+            // });
 
-//         $(lsElement).css({
-//           "top": newY/8 + "px",
-//           "left": newX/8 + "px"
-//         })
+            // closeButton.on('click', function() {
+            //     iframeContainer.remove();
+            //     isActive = false;
+            //     moveBoxes = false;
 
+            //     $('.event').css({
+            //       'opacity': '1',
+            //     });
 
-
-//         // --------------.RM ?????? WORKS (Kinda)--------------------
-//         var rmElement = $('.RM');
-//         var rmX = rmElement.offset().left;
-//         var rmY = rmElement.offset().top;
-    
-//         var rmdistanceX = Math.abs(mouseX - rmX);
-//         var rmdistanceY = Math.abs(mouseY - rmY);
-
-//         var newrmX = rmX +  (rmdistanceX / 8);
-//         var newrmY = rmY +  (rmdistanceY / 8);
-
-
-//         $(rmElement).css({
-//           "top": newrmY/8 + "px",
-//           "left": newrmX/8 + "px"
-//         })
-
-
-
-
-
-//kill switch-----------------------------------------------
-  // $(window).resize(function() {
-  //   console.log("Window resized!");
-  //   var mediaQuery = window.matchMedia('(max-width: 1024px)');
-  //   if (mediaQuery.matches) {
-  //     console.log("Media query matches (max-width: 1024px)");
-
-  //     return; // Stop further execution of the event handler
-
-  //   } else {
-
-      // console.log("Media query doesn't match (min-width: 721px)");
-      // Continue with the rest of the event handler
-
-
-// extra-----------------------------------------------------------
-
-
-// $('.event').on('click', function() {
-//   // Find the button within the clicked div and change its color to blue
-//   $(this).find('.myButton').css({
-//     'color': 'blue'
-//   });
-// });
-
-// $(document).ready(function() {
-//   // Array to store all event divs
-//   var eventDivs = [];
+            //     $('section').css({
+            //       'height': 'auto',
+            //     });
+            // });
+      // $('.event').on('click', function(e) {
+    //     var $currentEventDiv = $(eventDivs[currentIndex]);
+    //     var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
+    //     var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
   
-//   // Select all divs with class 'event' and push them into the array
-//   $('.event').each(function() {
-//     eventDivs.push($(this));
-//   });
+    //     if (!eventClicked) {
+    //         var eventID = $(this).attr('id');
+    //         isActive = true;
+    //         moveBoxes = true;
+
+    //         if (eventID === 'suyat') {
+    //             console.log("WORKS");
   
-//   // Initialize index to track the current event div
-//   var currentIndex = 0;
+    //             var booksIndex = 'booksIndex.html';
+  
+    //             var iframe = $('<iframe>', {
+    //                 src: booksIndex,
+    //                 width: '100%',
+    //                 height: '100%',
+    //                 frameborder: '0',
+    //                 margin: '20px',
+    //             });
+  
+    //             iframeContainer.append(closeButton);
+    //             iframeContainer.(iframe);
+  
+    //             $('body').append(iframeContainer);
+  
+    //             $('.event').css({
+    //               'opacity': '0',
+    //             });
 
-//   $(document).on('mousemove', function(e) {
-//     // Get the current event div to move
-//     var $currentEventDiv = eventDivs[currentIndex];
-    
-//     // Calculate the position to center the div relative to the mouse pointer
-//     var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
-//     var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
-    
-//     // Apply the new position to the div
-//     $currentEventDiv.css({
-//       "top": topPos + "px",
-//       "left": leftPos + "px"
-//     });
-//   });
-
-//   // Cycle through the event divs
-//   setInterval(function() {
-//     // Increment index and reset if it exceeds the array length
-//     currentIndex = (currentIndex + 1) % eventDivs.length;
-//   }, 3000); // Change the time interval as needed
-// });
-
-
-// ---------------------- extras----------------
-
-// $(document).ready(function() {
-//   $(document).on('mousemove', function(e) {
-
-//     var $anther = $("#anther_kiley");
-
-//     if (!$('#speakers').is(':hover')) {
-
-//       var leftPos = e.pageX - ($anther.outerWidth() / 2);
-//       var topPos = e.pageY - ($anther.outerHeight() / 2);
-
-//       $anther.css({
-//         "top": leftPos + "px",
-//         "left": topPos + "px"
-        
-//       });
-//     }
-//   });
-// });
-
-//----------------------more extras---------------------
-
-// $(document).ready(function() {
-//   var eventDivs = [];
-
-//   $('.event').each(function() {
-//     eventDivs.push($(this));
-//   });
-
-//   var currentIndex = 0;
-
-//   $(document).on('mousemove', function(e) {
-//     var $currentEventDiv = eventDivs[currentIndex];
-
-//     var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
-//     var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
-
-//     $currentEventDiv.css({
-//       "top": topPos + "px",
-//       "left": leftPos + "px"
-//     });
-
-
-//     currentIndex = (currentIndex + 1) % eventDivs.length;
-//   });
-// });
-
-
+    //         }

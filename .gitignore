@@ -1,0 +1,6 @@
+# Local dated website snapshots
+versions/
+
+# macOS metadata
+.DS_Store
+**/.DS_Store

@@ -28,26 +28,13 @@
     src: url("../webfonts/Redaction_70-Regular.woff2") format('woff2');
   }
 
-
-  ::-webkit-scrollbar {
-    height: 0;
-    width: 8px;
-
+  @font-face {
+    font-family: "RedactionItalic";
+    src: url("../webfonts/Redaction_10-Italic.woff2") format('woff2');
   }
 
-  ::-webkit-scrollbar-track {
-    background-color: white;
-    opacity: 0;
 
-  }
 
-  ::-webkit-scrollbar-thumb {
-    background-color: #000000;
-    border-radius: 4px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
-  
 
 *{
     margin: 0;
@@ -56,20 +43,15 @@
 }
 
 body{
-    margin-top: 2vh;
+    /* margin-top: 2vh; */
     background-color: white;
     color: black;
     overflow: hidden;
-    padding: 1%;
+    /* padding: 1%; */
     box-sizing:border-box;    
-    padding-top: 2.9vw;
+    /* padding-top: 2.9vw; */
     /* overflow-y: scroll; */
-
-}
-
-p{
-    margin-top: 10pt;
-    margin-bottom: 10pt;
+    align-items: center;
 
 }
 
@@ -84,35 +66,56 @@ a:hover {
     text-decoration:none;
     
 }
+/* -----------------------EVENT MOUSE------------------------------- */
 
 .event{
     z-index: 1;
-
-}
-
-.images{
-    margin-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2rem;
-
-}
-
-.images img{
-    width: 100%; 
+    /* border: 1px solid green; */
+    width: auto;
     height: auto;
-    border: 1px solid black;
-
 }
 
+.suyatGif{
+    width: 500px; 
+    height: auto;
+}
+
+.placeHolder1{
+    width: auto; 
+    height: 300px;
+}
+
+.DucGIF{
+    width: 250px; 
+}
+
+.hotMessGif{
+    width: 250px; 
+}
+
+
+
+/* ---------------------------------------------------------------------------------------- */
 
 #titles{
     font-style: normal;
+    text-transform: uppercase;
+    font-size: 13vw;
+    line-height: 180pt;
+    font-family: "RedactionReg";
+    font-weight: 300;
+    align-items: center;
+    text-align: center; /* Center the text horizontally */
+    z-index: -2;
+    position: fixed; /* Set position to fixed */
+    top: 50%; /* Position it at 50% from the top */
+    left: 50%; /* Position it at 50% from the left */
+    transform: translate(-50%, -50%); /
 
 }
 
 
-.RM{
+/* .RM{
     font-size: 4vw;
     font-family: "roc-grotesk";
     font-weight: 300;
@@ -122,35 +125,40 @@ a:hover {
     background-color: white;
     position: absolute;
     height: auto;
-    /* margin-top: 1vh; */
+
     padding: 5pt;
     margin-left: 1vw;
     margin-top: 2vh;
-    /* z-index: -2; */
 
-}
+
+} */
 
 .GD{
     text-transform: uppercase;
-    padding-top: 4vh;
-    font-size: 18vw;
+    font-size: 13vw;
     line-height: 180pt;
     font-family: "RedactionReg";
     font-weight: 300;
-    /* border: 1px black solid; */
-    display: inline-block;
-    padding-top: 5vh;
-    margin-top: 16vh;
-    padding: 4vh;
-    padding: 4vw;
-    margin-left: 4vw;
-    /* background-color: white; */
-    position: absolute;
+    align-items: center;
+    text-align: center; /* Center the text horizontally */
     z-index: -2;
-
+    position: fixed; /* Set position to fixed */
+    top: 50%; /* Position it at 50% from the top */
+    left: 50%; /* Position it at 50% from the left */
+    transform: translate(-50%, -50%); 
 }
 
-.LS {
+.name{
+    position: absolute;
+    z-index: 100000;
+    top: 88%; /* Position it at 50% from the top */
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: white;
+    background-color:black;
+}
+
+/* .LS {
     font-family: "roc-grotesk";
     font-size: 3vw;
     font-weight: 300;
@@ -160,40 +168,94 @@ a:hover {
     position: absolute;
     background-color: white;
     margin-top: 73vh;
-    margin-left: 58vw;
-    /* right: 5vw; */
-    /* margin-top: 79vh; */
+    margin-left: 67%;
+
+
     padding: 5pt;
 
+} */
+
+.invisible{
+    /* border: 1px solid hotpink; */
+    opacity: 1;
 }
+
+.wired{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wired video{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.ducVideo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ducVideo video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .butterfly {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .butterfly video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .renon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .renon video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
 
 section{
     line-height: 10pt;
     font-size: x-small;
-    width: 35em;
-    border: solid black 1px;
+    width: auto;
+    /* border: solid black 1px;
     padding: 2em;
-    background-color: white;
+    background-color: white; */
     color: black;
     position:absolute;
-    overflow: scroll;
+    overflow: visible;
+    opacity: 1;
+    /* border: 1px solid hotpink; */
 
-}
-
-img:hover{
-    cursor: pointer;
 }
 
 section:hover{
-    cursor: nesw-resize;
-    /* cursor: url(../images/cursor/expand.png),auto; */
+    cursor: pointer;
 }
 
-#anther_kiley{
+
+
+.images:hover{
+    cursor: pointer;
+}
+
+
+/* #anther_kiley{
     height: 26vh;
-}
+} */
 
-#takahashi_kuan{
+/* #takahashi_kuan{
     height: 32vh;
 }
 
@@ -203,26 +265,236 @@ section:hover{
 
 #sebastian_aubin{
     height: 28vh;
-}
+} */
 
 p{
-    font-family: "roc-grotesk";
+    font-family: monospace;
 }
-
-
 
 .external_links{
     width: 100%;
 }
 
-.their{
-    border-bottom: 1px solid black;
-    margin-top: 1.5rem;
+
+
+
+
+/*-----------------------------SUB-PAGES----------------------------------------*/
+
+.vid{
+    background-color: black;
+    border: 1px black solid;
+    width: 95%;
+    align-self: center;
 }
 
 .images img {
-    border: 1px solid black;
-  }
+    width: 95%; 
+    height: auto;
+    /* border: 2px blue solid; */
+    align-self: center;
+
+}
+
+.static-image{
+    align-self: center;
+}
+
+.gifTest{
+    display: flex;
+    flex-direction: column;
+}
+
+.images{
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    width: 85%;
+    grid-gap: 30px;
+    height: 100%;
+    /* border: 2px blue solid; */
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+    /* margin-top: 37px; */
+    height: 100vh;
+    /* border: 1px rgb(0, 34, 255) solid; */
+}
+
+.info{
+    position: relative;
+    padding: 2vw;
+    height: 100%;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+}
+
+.text{
+    position: absolute;
+    padding-right: 2vw;
+    margin-bottom: 60px;
+    /* border: 1px blue solid; */
+
+}
+
+h3{
+    font-size: 25pt;
+}
+.date{
+    font-family: "RedactionItalic";
+    font-size: 12pt;
+}
+
+p{
+    font-size: 12pt;
+    line-height: 18pt;
+    margin-top: 10pt;
+    font-family: monospace;
+}
+
+.block{
+    width: 35%;
+    /* border: 1px rgb(255, 200, 0) solid; */
+}
+
+.closeButton{
+    /* margin-top: 50px; */
+    /* height: min-content; */
+    background: none;
+    border: none;
+    z-index: 10000;
+    color: black;
+    cursor: pointer;
+    font-size: 30pt;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 30px;
+    /* border-bottom: #000000 1px solid; */
+    text-decoration: none;
+    top: 0;
+}
+
+.closeBox{
+    /* border: 2px solid blue; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100px;
+}
+
+.imgLinksContainer{
+    display: flex;
+    flex-direction: column;
+    grid-gap: 30px;
+    align-self: center;
+    /* border: green 1px solid; */
+    margin-bottom: 40px;
+}
+
+.imgLink{
+    width: 30px;
+    height: auto;
+}
+
+.imgLink:hover{
+    scale: 2;
+    transform: rotate(-0.1turn);
+    z-index: 90;
+}
+
+.closeButton:hover{
+    color: red;
+}
+
+.return{
+    font-size: 14pt;
+}
+
+
+/* .ducPageGif{
+    width: auto;
+    height: auto;
+    border: 1px hotpink solid;
+    padding-left: auto;
+    padding-right: auto;
+} */
+
+/* .walkingGif{
+    background-color: red;
+} */
+
+/* $('.main').css({
+    'display': 'flex',
+    'flex-direction': 'row',
+    'padding-left': '4%',
+    'padding-right': '3%',
+    'margin-top': '37px',
+    'height': '91%',   
+    'color':'blue',     
+    // 'border': '1px red solid',
+  })
+
+  $('.info').css({
+    'position': 'relative',
+    'height': '94%',
+    'padding-right': '7%',
+    // 'border': '1px rgb(255, 50, 0) solid',
+  })
+
+  $('.text').css({
+    'position': 'absolute',
+    'bottom': '0',
+  })
+
+  // $('h3').css({
+  //   'font-size': '10pt',
+  // })
+
+  // $('p').css({
+  //   'font-size': '9pt',
+  //   'line-height': '12pt',
+  // })
+
+  $('.block').css({
+    'width': '55%',
+    'z-index': '1',
+    'top': '0',
+    'left': '0',
+    'overflow': 'hidden',
+    // 'border': '1px rgb(255, 200, 0) solid',
+    'height': '100%',
+  }); */
+
+  /* $('.images').css({
+    'overflow': 'scroll',
+    'width': '45%',
+    // 'margin-top': '3vh',
+    // 'border': '1px red solid',
+  })
+
+  $("section:hover").css({
+    "cursor": "default"
+  }) */
+
+
+
+
+
+/*-----------------------------I-FRAMES----------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* .image{
     position: absolute;
@@ -232,10 +504,8 @@ p{
     z-index: 1000;
 } */
 
-
-
 /*-----------------------------this should work for all mobile devices since mobile does not have hover----------------------------------------*/
-  @media (hover: none){
+  /* @media (hover: none){
 
     body{
         overflow: scroll;
@@ -292,22 +562,20 @@ p{
         height: auto !important;
     }
 
-    }
+    } */
 
     /* --------------------------if smaller than 1050px----------------------------- */
 
-  @media (max-width: 1200px) {
+  /* @media (max-width: 1200px) {
     .GD{
         margin-top: 20vh;
         line-height: 120pt;
     }
-  }
-
-
+  } */
 
     /*---------------------------- if smaller than 750 px---------------------- */
 
-    @media (max-width: 750px) {
+    /* @media (max-width: 750px) {
 
     body{
         overflow: scroll;
@@ -324,7 +592,6 @@ p{
         position: static;
         padding: 0;
         margin: 1vh !important;
-        /* color: red; */
     }
     .LS{
         position: static;
@@ -373,4 +640,4 @@ p{
             line-height: 50pt;
         }
       }
-
+ */
