@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var worksProjectList = document.getElementById('works-project-list');
     var projectLinks = document.querySelectorAll('.project-link');
     var contactLink = document.querySelector('.home-menu a[href^="mailto:"]');
+    var projectViewer = document.getElementById('project-viewer');
+    var projectFrame = document.getElementById('project-frame');
+    var projectViewerClose = document.querySelector('.project-viewer-close');
 
     var setWorksOpen = function(isOpen) {
         worksProjectList.hidden = !isOpen;
@@ -27,6 +30,23 @@ document.addEventListener('DOMContentLoaded', function() {
         projectLinks.forEach(function(link) {
             setMenuItemActive(link, false);
         });
+    };
+
+    var openProjectViewer = function(source) {
+        if (projectFrame.getAttribute('src') !== source) {
+            projectFrame.setAttribute('src', source);
+        }
+
+        projectViewer.hidden = false;
+        document.body.classList.add('is-project-open');
+        projectViewerClose.focus();
+    };
+
+    var closeProjectViewer = function() {
+        projectViewer.hidden = true;
+        document.body.classList.remove('is-project-open');
+        clearProjectSelection();
+        document.querySelector('.project-link[data-project-frame="nabua"]').focus();
     };
 
     menuLinks.forEach(function(link) {
@@ -63,6 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 setMenuItemActive(contactLink, false);
                 clearProjectSelection();
                 setMenuItemActive(link, true);
+
+                if (link.dataset.projectFrame) {
+                    openProjectViewer(target);
+                }
             } else {
                 setWorksOpen(false);
                 setMenuItemActive(worksToggle, false);
@@ -76,6 +100,14 @@ document.addEventListener('DOMContentLoaded', function() {
         resumeSection.hidden = true;
         resumeSection.classList.remove('resume-fast-reveal');
         setMenuItemActive(resumeLink, false);
+    });
+
+    projectViewerClose.addEventListener('click', closeProjectViewer);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !projectViewer.hidden) {
+            closeProjectViewer();
+        }
     });
 });
 

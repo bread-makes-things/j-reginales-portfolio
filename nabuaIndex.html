@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nabua — Interactive Type Specimen</title>
+    <meta name="description" content="An interactive Latin and Baybayin character specimen for Nabua.">
+    <link rel="stylesheet" href="https://use.typekit.net/pij7zzx.css">
+    <link rel="stylesheet" href="css/nabua.css?v=20261110-11">
+  </head>
+  <body>
+    <main class="nabua-specimen">
+      <header class="nabua-toolbar">
+        <div class="nabua-heading">Nabua <span aria-hidden="true">ᜈᜊᜓᜀ</span></div>
+
+        <button class="script-toggle" id="script-toggle" type="button" aria-pressed="false">
+          [Switch to Baybayin]
+        </button>
+      </header>
+
+      <div class="nabua-layout">
+        <section class="glyph-inspector" aria-label="Selected glyph information">
+          <div class="metric-field" aria-hidden="true">
+            <div class="metric-line metric-ascender"><span>Ascender</span></div>
+            <div class="metric-line metric-cap"><span>Cap height</span></div>
+            <div class="metric-line metric-x"><span>x-height</span></div>
+            <div class="metric-line metric-baseline"><span>Baseline</span></div>
+            <div class="metric-line metric-descender"><span>Descender</span></div>
+            <canvas class="glyph-canvas" id="glyph-canvas"></canvas>
+          </div>
+
+          <dl class="glyph-metadata" aria-live="polite">
+            <div>
+              <dt>Font style</dt>
+              <dd>Nabua Regular</dd>
+            </div>
+            <div>
+              <dt>Glyph</dt>
+              <dd id="glyph-name">A</dd>
+            </div>
+            <div>
+              <dt>Unicode name</dt>
+              <dd id="unicode-name">Latin Capital Letter A</dd>
+            </div>
+            <div>
+              <dt>Unicode hex</dt>
+              <dd id="unicode-hex">U+0041</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="glyph-browser" aria-labelledby="grid-title">
+          <header class="grid-heading">
+            <h1 id="grid-title">Basic Latin</h1>
+            <span id="glyph-count">95 glyphs</span>
+          </header>
+          <div class="glyph-grid" id="glyph-grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <script src="js/nabua-notdef.js?v=20261110-2"></script>
+    <script src="js/nabua.js?v=20261110-16"></script>
+  </body>
+</html>

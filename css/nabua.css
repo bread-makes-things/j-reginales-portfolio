@@ -1,0 +1,345 @@
+@font-face {
+    font-family: "Nabua";
+    src: url("../webfonts/Nabua-2.0-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    color-scheme: dark;
+    --background: #161414;
+    --type: #ffffff;
+    --line: rgba(255, 255, 255, 0.35);
+    --muted: rgba(255, 255, 255, 0.55);
+    --active: #2f6bff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--background);
+    color: var(--type);
+}
+
+body,
+button {
+    font-family: "pt-mono", monospace;
+}
+
+button {
+    color: inherit;
+}
+
+.nabua-specimen {
+    --inspector-gutter: 2.5rem;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.nabua-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3rem;
+    padding: 0 0.75rem 0 var(--inspector-gutter);
+    font-size: clamp(10px, 0.85vw, 12px);
+}
+
+.nabua-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+}
+
+.nabua-heading span {
+    font-family: "Nabua", serif;
+    font-size: 1.45em;
+}
+
+.script-toggle {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.script-toggle:hover,
+.script-toggle:focus-visible {
+    color: var(--active);
+    text-decoration: underline;
+}
+
+.nabua-layout {
+    display: grid;
+    grid-template-columns: minmax(330px, 40%) minmax(0, 60%);
+    min-width: 0;
+    min-height: 0;
+    overflow: visible;
+}
+
+.glyph-inspector {
+    --inspector-shift: clamp(-140px, -15vh, -72px);
+    display: grid;
+    grid-template-rows: minmax(0, 72%) minmax(135px, 28%);
+    min-width: 0;
+    min-height: 0;
+    border-right: 1px solid var(--line);
+}
+
+.metric-field {
+    --metric-ascender: 8%;
+    --metric-cap: 22%;
+    --metric-x: 42%;
+    --metric-baseline: 78%;
+    --metric-descender: 94%;
+    position: relative;
+    top: var(--inspector-shift);
+    min-width: 0;
+    min-height: 0;
+    margin: 2.5rem var(--inspector-gutter) 0;
+    overflow: hidden;
+}
+
+.metric-line {
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    border-top: 1px dashed var(--line);
+    color: var(--muted);
+    font-size: clamp(8px, 0.62vw, 10px);
+    pointer-events: none;
+}
+
+.metric-line span {
+    position: absolute;
+    top: 0.05rem;
+    left: 0;
+}
+
+.metric-ascender {
+    top: var(--metric-ascender);
+}
+
+.metric-cap {
+    top: var(--metric-cap);
+}
+
+.metric-x {
+    top: var(--metric-x);
+}
+
+.metric-baseline {
+    top: var(--metric-baseline);
+}
+
+.metric-descender {
+    top: var(--metric-descender);
+}
+
+.glyph-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.glyph-metadata {
+    position: relative;
+    top: var(--inspector-shift);
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    min-width: 0;
+    margin: 0;
+    padding: 1.5rem var(--inspector-gutter);
+    font-size: clamp(9px, 0.7vw, 11px);
+    line-height: 1.25;
+}
+
+.glyph-metadata::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: var(--inspector-gutter);
+    left: var(--inspector-gutter);
+    border-top: 1px solid var(--line);
+}
+
+.glyph-metadata div {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 42%) minmax(0, 1fr);
+    gap: 0.75rem;
+}
+
+.glyph-metadata dt,
+.glyph-metadata dd {
+    min-width: 0;
+    margin: 0;
+}
+
+.glyph-metadata dt {
+    color: var(--muted);
+}
+
+.glyph-browser {
+    min-width: 0;
+    min-height: 0;
+    padding: 3.25rem clamp(1.25rem, 3.5vw, 4rem) 2rem;
+    overflow: auto;
+    scrollbar-color: var(--line) transparent;
+}
+
+.grid-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.65rem;
+}
+
+.grid-heading h1 {
+    margin: 0;
+    font: inherit;
+    font-size: clamp(11px, 0.85vw, 13px);
+    font-weight: 400;
+}
+
+#glyph-count {
+    color: var(--muted);
+    font-size: clamp(9px, 0.68vw, 11px);
+}
+
+.glyph-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(38px, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    transition: opacity 120ms ease;
+}
+
+.glyph-cell {
+    display: grid;
+    min-width: 0;
+    aspect-ratio: 1;
+    place-items: center;
+    margin: 0;
+    padding: 0.2rem;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    font-family: "Nabua", serif;
+    font-size: clamp(20px, 2.05vw, 38px);
+    line-height: 1;
+    cursor: pointer;
+}
+
+.glyph-cell.is-combining {
+    position: relative;
+}
+
+.combining-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glyph-cell:hover,
+.glyph-cell:focus-visible {
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+.glyph-cell.is-active {
+    background: var(--active);
+    color: white;
+}
+
+.nabua-layout.is-switching .glyph-grid,
+.nabua-layout.is-switching .glyph-canvas {
+    opacity: 0;
+}
+
+.glyph-canvas {
+    transition: opacity 120ms ease;
+}
+
+@media (max-width: 860px) {
+    .nabua-specimen {
+        --inspector-gutter: 1.5rem;
+    }
+
+    .nabua-layout {
+        grid-template-columns: minmax(280px, 42%) minmax(0, 58%);
+    }
+
+    .glyph-browser {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .glyph-grid {
+        grid-template-columns: repeat(8, minmax(38px, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .nabua-toolbar {
+        padding-left: var(--inspector-gutter);
+    }
+
+    .nabua-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(280px, 52%) minmax(0, 48%);
+        overflow: auto;
+    }
+
+    .glyph-inspector {
+        --inspector-shift: -1.5rem;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 40%);
+        grid-template-rows: 1fr;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .metric-field {
+        margin-top: 1.25rem;
+    }
+
+    .glyph-metadata {
+        border-top: 0;
+        border-left: 1px solid var(--line);
+    }
+
+    .glyph-browser {
+        padding-top: 1.5rem;
+    }
+
+    .glyph-grid {
+        grid-template-columns: repeat(6, minmax(38px, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glyph-grid,
+    .glyph-canvas {
+        transition: none;
+    }
+}
