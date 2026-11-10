@@ -6,8 +6,9 @@
     <title>J.Reginales</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=20261109-11">
     <link rel="stylesheet" href="https://use.typekit.net/frw6soe.css">
+    <link rel="stylesheet" href="https://use.typekit.net/pij7zzx.css">
 
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -16,16 +17,33 @@
   </head>
   <body class="indexBody">
 
+    <header class="home-intro">
+      <p class="home-intro-name">Joshua Reginales</p>
 
-    <div id="titles">
-      <!-- <h1 class="RM">Hello! this is a...</h1>  -->
-      <h1 class="GD">Portfolio!</h1>
-      <!-- <h2 class="LS">by Joshua Reginales</h2> -->
-    </div>
+      <p class="home-intro-statement">
+        Designer focused on typography, visual systems, and identity design.
+      </p>
+    </header>
 
-    <p class="name"></p>
+    <nav class="home-menu" aria-label="Primary navigation">
+      <div class="home-menu-links">
+        <a href="#resume" class="is-selected" aria-current="true">Resume</a>
+        <a href="#projects" class="works-toggle is-selected" aria-current="true" aria-expanded="true" aria-controls="works-project-list">Works</a>
+        <ul class="works-project-list" id="works-project-list">
+          <li><a class="project-link" href="#type-journal-issue-0">Type Journal Issue 0</a></li>
+          <li><a class="project-link" href="#suyat-booklet">Suyat booklet</a></li>
+          <li><a class="project-link" href="#nabua">Nabua</a></li>
+          <li><a class="project-link" href="#type-in-the-wild">Type in the wild</a></li>
+          <li><a class="project-link" href="#section-architects">Section Architects</a></li>
+          <li><a class="project-link" href="#polaris-posters">Polaris posters</a></li>
+        </ul>
+        <a href="mailto:joshregi1209@gmail.com">Contact</a>
+      </div>
+    </nav>
 
-    <div id="speakers">
+    <!-- <p class="name"></p> -->
+
+    <div id="projects">
 
       <section class="event" id="suyat">
         <img class="suyatGif" src="images/suyat/output-onlinegiftoolsStatic.png" alt="Static Image">
@@ -46,14 +64,80 @@
         <img class="hotMessGif" src="images/hotMess/hotMess.gif" alt="Static Image">
       </section>
 
-
     </div>
 
+    <section class="home-info" id="resume" aria-label="Résumé summary">
+      <button class="resume-clear" type="button" aria-label="Clear résumé">[clear ×]</button>
 
+      <div class="info-column">
+        <h2>Relevant Experience</h2>
 
+        <p>
+          <strong class="entry-title">aftermodern.lab inc.</strong><br>
+          Corps de Design, Design &amp; Typography<br>
+          Sep 2024–Present<br>
+          (Permanent Full-time)
+        </p>
 
-    </div>
-    <script src="js/script.js"></script>
-    </div>
+        <p>
+          <strong class="entry-title">ARIDO</strong><br>
+          In-House Graphic Designer<br>
+          Jun 2026–Present<br>
+          (Contract Part-time)
+        </p>
+
+        <p>
+          <strong class="entry-title">LE PETIT SAO — Bols vietnamiens</strong><br>
+          Graphic Designer<br>
+          Apr 2023–Aug 2023<br>
+          (Internship)
+        </p>
+      </div>
+
+      <div class="info-column">
+        <h2>Education</h2>
+
+        <p>
+          <strong class="entry-title">Bachelor of Design, Graphic Design<br>
+          (Honours)</strong><br>
+          OCAD University — Toronto, ON<br>
+          2022–2025
+        </p>
+
+        <p>
+          <strong class="entry-title">Diploma in Graphic Applications in<br>
+          Desktop Publishing</strong><br>
+          Concordia University — Montreal, QC<br>
+          2019–2020
+        </p>
+
+        <p>
+          <strong class="entry-title">Certificate in Graphic Design &amp;<br>
+          Page Layout</strong><br>
+          Concordia University — Montreal, QC<br>
+          2019–2020
+        </p>
+      </div>
+
+      <div class="info-column info-awards">
+        <h2>Awards</h2>
+
+        <p>
+          <strong class="entry-title">C2A Creative Communication Award</strong><br>
+          aftermodern.lab inc. — Toronto, ON<br>
+          Sep 2025
+        </p>
+
+        <p>
+          One of two lead designers on a C2A-awarded pair of poster designs for the 2025 Polaris Heritage Prize, supporting the project’s production through final execution.
+        </p>
+
+        <p>..........................................</p>
+
+        <a href="mailto:joshregi1209@gmail.com">joshregi1209@gmail.com</a>
+      </div>
+    </section>
+
+    <script src="js/script.js?v=20261109-6"></script>
   </body>
 </html>

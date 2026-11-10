@@ -1,5 +1,87 @@
+document.addEventListener('DOMContentLoaded', function() {
+    var menuLinks = document.querySelectorAll('.home-menu a');
+    var resumeSection = document.getElementById('resume');
+    var resumeClear = document.querySelector('.resume-clear');
+    var resumeLink = document.querySelector('.home-menu a[href="#resume"]');
+    var worksToggle = document.querySelector('.works-toggle');
+    var worksProjectList = document.getElementById('works-project-list');
+    var projectLinks = document.querySelectorAll('.project-link');
+    var contactLink = document.querySelector('.home-menu a[href^="mailto:"]');
+
+    var setWorksOpen = function(isOpen) {
+        worksProjectList.hidden = !isOpen;
+        worksToggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    var setMenuItemActive = function(link, isActive) {
+        link.classList.toggle('is-selected', isActive);
+
+        if (isActive) {
+            link.setAttribute('aria-current', 'true');
+        } else {
+            link.removeAttribute('aria-current');
+        }
+    };
+
+    var clearProjectSelection = function() {
+        projectLinks.forEach(function(link) {
+            setMenuItemActive(link, false);
+        });
+    };
+
+    menuLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            var target = link.getAttribute('href');
+
+            if (target === '#resume') {
+                e.preventDefault();
+                resumeSection.hidden = !resumeSection.hidden;
+
+                if (resumeSection.hidden) {
+                    resumeSection.classList.remove('resume-fast-reveal');
+                    setMenuItemActive(resumeLink, false);
+                } else {
+                    resumeSection.classList.add('resume-fast-reveal');
+                    setMenuItemActive(resumeLink, true);
+                }
+
+                setMenuItemActive(contactLink, false);
+            } else if (target === '#projects') {
+                e.preventDefault();
+                var shouldOpen = worksProjectList.hidden;
+                setWorksOpen(shouldOpen);
+                setMenuItemActive(worksToggle, shouldOpen);
+                setMenuItemActive(contactLink, false);
+
+                if (!shouldOpen) {
+                    clearProjectSelection();
+                }
+            } else if (link.classList.contains('project-link')) {
+                e.preventDefault();
+                setWorksOpen(true);
+                setMenuItemActive(worksToggle, true);
+                setMenuItemActive(contactLink, false);
+                clearProjectSelection();
+                setMenuItemActive(link, true);
+            } else {
+                setWorksOpen(false);
+                setMenuItemActive(worksToggle, false);
+                clearProjectSelection();
+                setMenuItemActive(contactLink, true);
+            }
+        });
+    });
+
+    resumeClear.addEventListener('click', function() {
+        resumeSection.hidden = true;
+        resumeSection.classList.remove('resume-fast-reveal');
+        setMenuItemActive(resumeLink, false);
+    });
+});
+
 $(document).ready(function() {
     var eventDivs = $('.event');
+    var $projectsFrame = $('#projects');
     var currentIndex = 0;
     var moveBoxes = false;
     var isActive = false;
@@ -7,8 +89,6 @@ $(document).ready(function() {
     var thirdIndex = 2;
     var fourthIndex = 3;
     var eventClicked = false;
-  
-  
     var mouseMove = function(e) {
       var static = 'images/suyat/output-onlinegiftoolsStatic.png';
       var gif = 'images/suyat/output-onlinegiftools.gif'; // Ensure this GIF loops forever
@@ -73,8 +153,16 @@ $(document).ready(function() {
   
         if (!isActive) {
             var $currentEventDiv = $(eventDivs[currentIndex]);
-            var leftPos = e.pageX - ($currentEventDiv.outerWidth() / 2);
-            var topPos = e.pageY - ($currentEventDiv.outerHeight() / 2);
+            var frameBounds = $projectsFrame[0].getBoundingClientRect();
+            var eventWidth = $currentEventDiv.outerWidth();
+            var eventHeight = $currentEventDiv.outerHeight();
+            var leftPos = e.clientX - frameBounds.left - (eventWidth / 2);
+            var topPos = e.clientY - frameBounds.top - (eventHeight / 2);
+            var maxLeft = Math.max(0, frameBounds.width - eventWidth);
+            var maxTop = Math.max(0, frameBounds.height - eventHeight);
+
+            leftPos = Math.max(0, Math.min(leftPos, maxLeft));
+            topPos = Math.max(0, Math.min(topPos, maxTop));
   
             $currentEventDiv.css({
                 "top": topPos + "px",
@@ -116,7 +204,7 @@ $(document).ready(function() {
       mouseFollow();
     };
   
-    $(document).on('mousemove', mouseMove);
+    $projectsFrame.on('mousemove', mouseMove);
 
 
   
@@ -198,10 +286,12 @@ $(document).ready(function() {
     $(eventDivs[fourthIndex]).height(currentHeight);
   
     if ($(eventDivs[fourthIndex]).height() > 33 * $(window).height() / 100) {
-        $(eventDivs).draggable();
+        $(eventDivs).draggable({
+            containment: '#projects'
+        });
   
         $('.event').css({
-            'position': 'fixed',
+            'position': 'absolute',
         });
     }
   
