@@ -6,7 +6,7 @@
     <title>J.Reginales</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/main.css?v=20261110-8">
+    <link rel="stylesheet" href="css/main.css?v=20261112-16">
     <link rel="stylesheet" href="https://use.typekit.net/frw6soe.css">
     <link rel="stylesheet" href="https://use.typekit.net/pij7zzx.css">
 
@@ -23,11 +23,12 @@
       <p class="home-intro-statement">
         Designer focused on typography, visual systems, and identity design.
       </p>
+
+      <time class="home-intro-date" datetime="2026-11-12">2026.11.12</time>
     </header>
 
     <nav class="home-menu" aria-label="Primary navigation">
       <div class="home-menu-links">
-        <a href="#resume" class="is-selected" aria-current="true">Resume</a>
         <a href="#projects" class="works-toggle is-selected" aria-current="true" aria-expanded="true" aria-controls="works-project-list">Works</a>
         <ul class="works-project-list" id="works-project-list">
           <li><a class="project-link" href="#type-journal-issue-0">Type Journal Issue 0</a></li>
@@ -45,6 +46,7 @@
 
     <div id="projects">
 
+      <!-- Mouse-hover project frames temporarily disabled.
       <section class="event" id="suyat">
         <img class="suyatGif" src="images/suyat/output-onlinegiftoolsStatic.png" alt="Static Image">
       </section>
@@ -63,16 +65,19 @@
       <section class="event" id="sebastian_aubin">
         <img class="hotMessGif" src="images/hotMess/hotMess.gif" alt="Static Image">
       </section>
+      -->
 
       <section class="project-viewer" id="project-viewer" aria-label="Project viewer" hidden>
-        <button class="project-viewer-close" type="button" aria-label="Close project">[clear ×]</button>
         <iframe id="project-frame" title="Nabua interactive type specimen"></iframe>
       </section>
 
     </div>
 
+    <button class="project-viewer-close" type="button" aria-label="Close project">[clear project ×]</button>
+    <button class="resume-toggle" type="button" aria-controls="resume" aria-expanded="true" hidden>[open resume]</button>
+
     <section class="home-info" id="resume" aria-label="Résumé summary">
-      <button class="resume-clear" type="button" aria-label="Clear résumé">[clear ×]</button>
+      <button class="resume-clear" type="button" aria-label="Clear résumé">[clear resume ×]</button>
 
       <div class="info-column">
         <h2>Relevant Experience</h2>
@@ -143,6 +148,6 @@
       </div>
     </section>
 
-    <script src="js/script.js?v=20261110-1"></script>
+    <script src="js/script.js?v=20261112-4"></script>
   </body>
 </html>

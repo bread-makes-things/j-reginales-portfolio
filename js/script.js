@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    var dateDisplay = document.querySelector('.home-intro-date');
     var menuLinks = document.querySelectorAll('.home-menu a');
     var resumeSection = document.getElementById('resume');
     var resumeClear = document.querySelector('.resume-clear');
-    var resumeLink = document.querySelector('.home-menu a[href="#resume"]');
+    var resumeToggle = document.querySelector('.resume-toggle');
     var worksToggle = document.querySelector('.works-toggle');
     var worksProjectList = document.getElementById('works-project-list');
     var projectLinks = document.querySelectorAll('.project-link');
@@ -10,6 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
     var projectViewer = document.getElementById('project-viewer');
     var projectFrame = document.getElementById('project-frame');
     var projectViewerClose = document.querySelector('.project-viewer-close');
+
+    if (dateDisplay) {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()).padStart(2, '0');
+
+        dateDisplay.textContent = year + '.' + month + '.' + day;
+        dateDisplay.setAttribute('datetime', year + '-' + month + '-' + day);
+    }
 
     var setWorksOpen = function(isOpen) {
         worksProjectList.hidden = !isOpen;
@@ -32,7 +43,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    var setResumeOpen = function(isOpen) {
+        resumeSection.hidden = !isOpen;
+        resumeToggle.hidden = isOpen;
+        resumeToggle.classList.toggle('is-selected', isOpen);
+        resumeToggle.setAttribute('aria-expanded', String(isOpen));
+
+        if (isOpen) {
+            resumeSection.classList.add('resume-fast-reveal');
+        } else {
+            resumeSection.classList.remove('resume-fast-reveal');
+        }
+    };
+
     var openProjectViewer = function(source) {
+        document.body.classList.remove('is-project-image-open');
+
         if (projectFrame.getAttribute('src') !== source) {
             projectFrame.setAttribute('src', source);
         }
@@ -45,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var closeProjectViewer = function() {
         projectViewer.hidden = true;
         document.body.classList.remove('is-project-open');
+        document.body.classList.remove('is-project-image-open');
         clearProjectSelection();
         document.querySelector('.project-link[data-project-frame="nabua"]').focus();
     };
@@ -53,20 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             var target = link.getAttribute('href');
 
-            if (target === '#resume') {
-                e.preventDefault();
-                resumeSection.hidden = !resumeSection.hidden;
-
-                if (resumeSection.hidden) {
-                    resumeSection.classList.remove('resume-fast-reveal');
-                    setMenuItemActive(resumeLink, false);
-                } else {
-                    resumeSection.classList.add('resume-fast-reveal');
-                    setMenuItemActive(resumeLink, true);
-                }
-
-                setMenuItemActive(contactLink, false);
-            } else if (target === '#projects') {
+            if (target === '#projects') {
                 e.preventDefault();
                 var shouldOpen = worksProjectList.hidden;
                 setWorksOpen(shouldOpen);
@@ -78,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else if (link.classList.contains('project-link')) {
                 e.preventDefault();
+                setResumeOpen(false);
                 setWorksOpen(true);
                 setMenuItemActive(worksToggle, true);
                 setMenuItemActive(contactLink, false);
@@ -96,13 +111,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    resumeToggle.addEventListener('click', function() {
+        setResumeOpen(resumeSection.hidden);
+        setMenuItemActive(contactLink, false);
+    });
+
     resumeClear.addEventListener('click', function() {
-        resumeSection.hidden = true;
-        resumeSection.classList.remove('resume-fast-reveal');
-        setMenuItemActive(resumeLink, false);
+        setResumeOpen(false);
+        resumeToggle.focus();
     });
 
     projectViewerClose.addEventListener('click', closeProjectViewer);
+
+    window.addEventListener('message', function(e) {
+        if (
+            e.origin !== window.location.origin ||
+            e.source !== projectFrame.contentWindow ||
+            !e.data ||
+            e.data.type !== 'nabua-image-lightbox'
+        ) {
+            return;
+        }
+
+        document.body.classList.toggle('is-project-image-open', Boolean(e.data.isOpen));
+    });
 
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && !projectViewer.hidden) {

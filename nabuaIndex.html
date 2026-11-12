@@ -6,60 +6,198 @@
     <title>Nabua — Interactive Type Specimen</title>
     <meta name="description" content="An interactive Latin and Baybayin character specimen for Nabua.">
     <link rel="stylesheet" href="https://use.typekit.net/pij7zzx.css">
-    <link rel="stylesheet" href="css/nabua.css?v=20261110-11">
+    <link rel="stylesheet" href="css/nabua.css?v=20261112-19">
   </head>
   <body>
     <main class="nabua-specimen">
-      <header class="nabua-toolbar">
-        <div class="nabua-heading">Nabua <span aria-hidden="true">ᜈᜊᜓᜀ</span></div>
+      <div class="nabua-content">
+        <!-- Temporarily hidden while building the reference composition.
+        <header class="nabua-toolbar">
+          <div class="nabua-heading">Nabua <span aria-hidden="true">ᜈᜊᜓᜀ</span></div>
 
-        <button class="script-toggle" id="script-toggle" type="button" aria-pressed="false">
-          [Switch to Baybayin]
-        </button>
-      </header>
+          <button class="script-toggle" id="script-toggle" type="button" aria-pressed="false">
+            [Switch to Baybayin]
+          </button>
+        </header>
+        -->
 
-      <div class="nabua-layout">
-        <section class="glyph-inspector" aria-label="Selected glyph information">
-          <div class="metric-field" aria-hidden="true">
-            <div class="metric-line metric-ascender"><span>Ascender</span></div>
-            <div class="metric-line metric-cap"><span>Cap height</span></div>
-            <div class="metric-line metric-x"><span>x-height</span></div>
-            <div class="metric-line metric-baseline"><span>Baseline</span></div>
-            <div class="metric-line metric-descender"><span>Descender</span></div>
-            <canvas class="glyph-canvas" id="glyph-canvas"></canvas>
+        <section class="nabua-intro" aria-label="About Nabua">
+          <div class="nabua-intro-layout">
+            <div
+              class="intro-carousel"
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Nabua project images"
+            >
+              <div
+                class="intro-carousel-viewport"
+                role="button"
+                tabindex="0"
+                aria-label="Show next project image"
+              >
+                <figure class="intro-slide is-active" aria-label="1 of 4">
+                  <img
+                    src="images/nabua-intro/nabua-title-page.jpeg"
+                    alt="Nabua typeface applied to a glass dropper bottle"
+                    width="2400"
+                    height="1800"
+                    fetchpriority="high"
+                  >
+                </figure>
+                <figure class="intro-slide" aria-label="2 of 4" aria-hidden="true">
+                  <img
+                    src="images/nabua-intro/editorial-book.jpg"
+                    alt="Nabua typeface presented in an editorial book mockup"
+                    width="2400"
+                    height="1800"
+                    loading="lazy"
+                  >
+                </figure>
+                <figure class="intro-slide" aria-label="3 of 4" aria-hidden="true">
+                  <img
+                    src="images/nabua-intro/poster-package.jpg"
+                    alt="Nabua typographic poster shown in protective packaging"
+                    width="2400"
+                    height="1800"
+                    loading="lazy"
+                  >
+                </figure>
+                <figure class="intro-slide" aria-label="4 of 4" aria-hidden="true">
+                  <img
+                    src="images/nabua-intro/poster-environment.jpg"
+                    alt="Nabua typographic poster displayed in an interior"
+                    width="2400"
+                    height="1800"
+                    loading="lazy"
+                  >
+                </figure>
+              </div>
+
+              <div class="intro-carousel-dots" role="group" aria-label="Choose a carousel image">
+                <button class="intro-carousel-dot is-active" type="button" aria-label="Show image 1" aria-current="true"></button>
+                <button class="intro-carousel-dot" type="button" aria-label="Show image 2"></button>
+                <button class="intro-carousel-dot" type="button" aria-label="Show image 3"></button>
+                <button class="intro-carousel-dot" type="button" aria-label="Show image 4"></button>
+              </div>
+            </div>
+
+            <div class="nabua-intro-copy">
+              <p>
+                Nabua was my first type design assignment at OCAD University, where I attempted to create a bi-scriptural typeface in which the letterforms of both scripts influence one another throughout the design.
+              </p>
+              <p>
+                My plan is to continue developing this typeface over time, allowing it to evolve alongside my growing understanding of type design and bi-scriptural systems, essentially turning what started off as a school project into one that will remain forever unfinished.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div class="character-showcase">
+          <div class="nabua-layout">
+          <section class="glyph-inspector" aria-label="Selected glyph information">
+            <div class="glyph-preview-frame" aria-hidden="true">
+              <span class="metric-corner metric-corner-top-left"></span>
+              <span class="metric-corner metric-corner-top-right"></span>
+              <span class="metric-corner metric-corner-bottom-left"></span>
+              <span class="metric-corner metric-corner-bottom-right"></span>
+
+              <div class="metric-field">
+                <div class="metric-line metric-ascender"><span>Ascender</span></div>
+                <div class="metric-line metric-cap"><span>Cap height</span></div>
+                <div class="metric-line metric-x"><span>x-height</span></div>
+                <div class="metric-line metric-baseline"><span>Baseline</span></div>
+                <div class="metric-line metric-descender"><span>Descender</span></div>
+                <canvas class="glyph-canvas" id="glyph-canvas"></canvas>
+              </div>
+            </div>
+
+            <dl class="glyph-metadata" aria-live="polite">
+              <div>
+                <dt>Font style</dt>
+                <dd>Nabua Regular</dd>
+              </div>
+              <div>
+                <dt>Glyph</dt>
+                <dd id="glyph-name">A</dd>
+              </div>
+              <div>
+                <dt>Unicode name</dt>
+                <dd id="unicode-name">Latin Capital Letter A</dd>
+              </div>
+              <div>
+                <dt>Unicode hex</dt>
+                <dd id="unicode-hex">U+0041</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="glyph-browser" aria-labelledby="grid-title">
+            <header class="grid-heading">
+              <div class="grid-heading-title">
+                <h1 id="grid-title">Basic Latin</h1>
+                <span id="glyph-count">95 glyphs</span>
+              </div>
+              <button class="script-toggle" id="script-toggle" type="button" aria-pressed="false">
+                [Switch to Baybayin]
+              </button>
+            </header>
+            <div class="glyph-grid" id="glyph-grid"></div>
+          </section>
+          </div>
+        </div>
+
+        <section class="type-tester" aria-label="Nabua type tester">
+          <div class="type-tester-stage">
+            <div
+              class="type-tester-text"
+              id="type-tester-text"
+              contenteditable="true"
+              role="textbox"
+              aria-label="Editable Nabua specimen text"
+              aria-multiline="true"
+              spellcheck="false"
+            >The quick brown fox jumps over the lazy dog</div>
           </div>
 
-          <dl class="glyph-metadata" aria-live="polite">
-            <div>
-              <dt>Font style</dt>
-              <dd>Nabua Regular</dd>
-            </div>
-            <div>
-              <dt>Glyph</dt>
-              <dd id="glyph-name">A</dd>
-            </div>
-            <div>
-              <dt>Unicode name</dt>
-              <dd id="unicode-name">Latin Capital Letter A</dd>
-            </div>
-            <div>
-              <dt>Unicode hex</dt>
-              <dd id="unicode-hex">U+0041</dd>
-            </div>
-          </dl>
+          <div class="type-tester-controls">
+            <label for="type-tester-size">size</label>
+            <input
+              id="type-tester-size"
+              type="range"
+              min="24"
+              max="180"
+              value="72"
+              aria-controls="type-tester-text"
+            >
+          </div>
         </section>
 
-        <section class="glyph-browser" aria-labelledby="grid-title">
-          <header class="grid-heading">
-            <h1 id="grid-title">Basic Latin</h1>
-            <span id="glyph-count">95 glyphs</span>
-          </header>
-          <div class="glyph-grid" id="glyph-grid"></div>
+        <!-- Temporarily hidden while building the reference composition.
+        <section class="image-gallery" aria-label="Nabua in use">
+          <button class="gallery-item" type="button" aria-label="Expand Nabua dropper bottle mockup">
+            <img src="images/nabua-gallery/rose-dropper.jpg" alt="Nabua typeface used on a Rosé dropper bottle label" loading="lazy">
+          </button>
+          <button class="gallery-item" type="button" aria-label="Expand Nabua editorial mockup">
+            <img src="images/nabua-gallery/type-book.jpg" alt="Open editorial publication featuring Nabua typography" loading="lazy">
+          </button>
+          <button class="gallery-item" type="button" aria-label="Expand Nabua packaged poster mockup">
+            <img src="images/nabua-gallery/type-poster-bag.jpg" alt="Typographic poster packaged in a clear bag" loading="lazy">
+          </button>
+          <button class="gallery-item" type="button" aria-label="Expand Nabua poster mockup">
+            <img src="images/nabua-gallery/type-poster-room.jpg" alt="Nabua alphabet poster displayed in a bright interior" loading="lazy">
+          </button>
         </section>
+      </div>
+
+      <div class="gallery-lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Expanded project image" hidden>
+        <button class="gallery-lightbox-close" type="button" aria-label="Close expanded image">[close ×]</button>
+        <img class="gallery-lightbox-image" src="" alt="">
+      </div>
+      -->
       </div>
     </main>
 
     <script src="js/nabua-notdef.js?v=20261110-2"></script>
-    <script src="js/nabua.js?v=20261110-16"></script>
+    <script src="js/nabua.js?v=20261112-10"></script>
   </body>
 </html>

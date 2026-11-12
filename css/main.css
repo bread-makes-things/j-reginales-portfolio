@@ -70,8 +70,32 @@ body{
     --frame-bottom: 6.4vh;
     --frame-left: 7.8vw;
     --frame-line-color: rgba(255, 255, 255, 0.35);
+    --project-ui-layer: 100;
+    --portfolio-frame-layer: 1000;
+    --portfolio-ui-layer: 1100;
+    --portfolio-opacity: 1;
+    --portfolio-ui-color: white;
     background-color: #161414;
-    color: white;
+    color: var(--portfolio-ui-color);
+}
+
+.indexBody.is-project-open{
+    --portfolio-opacity: 0.5;
+}
+
+.indexBody:has(
+    .home-intro:hover,
+    .home-intro:focus-within,
+    .home-menu:hover,
+    .home-menu:focus-within,
+    .home-info:hover,
+    .home-info:focus-within,
+    .project-viewer-close:hover,
+    .project-viewer-close:focus-visible,
+    .resume-toggle:hover,
+    .resume-toggle:focus-visible
+){
+    --portfolio-opacity: 1;
 }
 
 .indexBody::before,
@@ -79,8 +103,10 @@ body{
     content: "";
     position: fixed;
     box-sizing: border-box;
+    opacity: 1;
     pointer-events: none;
-    z-index: 1000;
+    transition: opacity 160ms ease;
+    z-index: var(--portfolio-frame-layer);
 }
 
 .indexBody::before{
@@ -108,6 +134,13 @@ body{
 #projects,
 .home-info{
     animation: content-intro 0.35s ease 1.15s both;
+}
+
+.home-intro,
+.home-menu,
+.home-info{
+    filter: opacity(var(--portfolio-opacity));
+    transition: filter 160ms ease;
 }
 
 @keyframes vertical-frame-intro{
@@ -190,6 +223,7 @@ a:hover {
     right: var(--frame-right);
     bottom: var(--frame-bottom);
     left: var(--frame-left);
+    z-index: var(--project-ui-layer);
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -197,7 +231,7 @@ a:hover {
 .project-viewer{
     position: absolute;
     inset: 0;
-    z-index: 20;
+    z-index: 1;
     background: #161414;
 }
 
@@ -214,20 +248,25 @@ a:hover {
 }
 
 .project-viewer-close{
-    position: absolute;
-    top: 0.15rem;
-    left: 0.35rem;
-    z-index: 2;
+    display: none;
+    position: fixed;
+    top: calc(var(--frame-top) + 1.65rem);
+    left: var(--page-gutter);
+    z-index: var(--portfolio-ui-layer);
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
-    color: white;
-    opacity: 1;
+    color: var(--portfolio-ui-color);
+    opacity: var(--portfolio-opacity);
     font-family: "pt-mono", monospace;
     font-size: clamp(10px, 0.75vw, 12px);
     cursor: pointer;
     transition: opacity 120ms ease;
+}
+
+.indexBody.is-project-open .project-viewer-close{
+    display: block;
 }
 
 .project-viewer-close:hover,
@@ -235,6 +274,35 @@ a:hover {
     color: #ff3b30;
     opacity: 1;
     text-decoration: underline;
+}
+
+.resume-toggle{
+    position: fixed;
+    left: var(--page-gutter);
+    bottom: calc(var(--frame-bottom) + 3rem);
+    z-index: var(--portfolio-ui-layer);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--portfolio-ui-color);
+    opacity: var(--portfolio-opacity);
+    font-family: "pt-mono", monospace;
+    font-size: clamp(10px, 0.75vw, 12px);
+    cursor: pointer;
+    transition: color 120ms ease, opacity 160ms ease;
+}
+
+.resume-toggle:hover,
+.resume-toggle:focus-visible,
+.resume-toggle.is-selected{
+    color: #2f6bff;
+    text-decoration: underline;
+}
+
+.indexBody.is-project-image-open .project-viewer-close{
+    display: none;
+    pointer-events: none;
 }
 
 .indexBody.is-project-open #projects > .event{
@@ -264,13 +332,13 @@ a:hover {
     position: fixed;
     top: 2.5vh;
     left: var(--page-gutter);
-    z-index: 1100;
+    z-index: var(--portfolio-ui-layer);
     width: calc(100vw - (var(--page-gutter) * 2));
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    color: white;
-    pointer-events: none;
+    color: var(--portfolio-ui-color);
+    pointer-events: auto;
 }
 
 .home-intro p{
@@ -288,11 +356,20 @@ a:hover {
     line-height: 1.1;
 }
 
+.home-intro-date{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-family: "pt-mono", monospace;
+    font-size: clamp(10px, 0.75vw, 9px);
+    line-height: 1.1;
+}
+
 .home-menu{
     position: fixed;
     top: 29vh;
     left: var(--page-gutter);
-    z-index: 1100;
+    z-index: var(--portfolio-ui-layer);
     width: min(72vw, 900px);
     display: grid;
     grid-template-columns: 1fr 1fr 1.2fr;
@@ -311,7 +388,7 @@ a:hover {
 
 .home-menu a{
     width: fit-content;
-    color: white;
+    color: var(--portfolio-ui-color);
     text-decoration: none;
     pointer-events: auto;
 }
@@ -363,17 +440,17 @@ a:hover {
     position: fixed;
     left: var(--page-gutter);
     bottom: calc(var(--frame-bottom) - 1.5rem);
-    z-index: 1100;
+    z-index: var(--portfolio-ui-layer);
     width: min(72vw, 900px);
     display: grid;
     grid-template-columns: 1fr 1fr 1.2fr;
     gap: 2rem;
-    color: white;
+    color: var(--portfolio-ui-color);
     font-family: "pt-mono", monospace;
     font-size: clamp(10px, 0.75vw, 9px);
     font-weight: 400;
     line-height: 1.3;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .home-info[hidden]{
@@ -392,10 +469,10 @@ a:hover {
     padding: 0;
     border: 0;
     background: transparent;
-    color: white;
+    color: var(--portfolio-ui-color);
     opacity: 1;
     font: inherit;
-    font-size: clamp(12px, 0.9vw, 14px);
+    font-size: clamp(10px, 0.75vw, 12px);
     cursor: pointer;
     pointer-events: auto;
     transition: opacity 120ms ease;
@@ -503,7 +580,7 @@ a:hover {
     top: 88%; /* Position it at 50% from the top */
     left: 50%;
     transform: translate(-50%, -50%); 
-    color: white;
+    color: var(--portfolio-ui-color);
     background-color:black;
 }
 

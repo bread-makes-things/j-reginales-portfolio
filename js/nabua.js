@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var gridTitle = document.getElementById('grid-title');
     var glyphCount = document.getElementById('glyph-count');
     var layout = document.querySelector('.nabua-layout');
+    var typeTesterText = document.getElementById('type-tester-text');
+    var typeTesterSize = document.getElementById('type-tester-size');
+    var introCarousel = document.querySelector('.intro-carousel');
+    var introCarouselViewport = document.querySelector('.intro-carousel-viewport');
+    var introSlides = Array.from(document.querySelectorAll('.intro-slide'));
+    var introDots = Array.from(document.querySelectorAll('.intro-carousel-dot'));
     var currentSet = 'latin';
     var currentGlyph = null;
     var activeButton = null;
@@ -16,15 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var notdefGlyph = window.NabuaNotdef;
     var notdefPath = new Path2D();
     var markPaths = {};
-    var markBounds = Object.keys(notdefGlyph.marks).map(function(codePoint) {
-        return notdefGlyph.marks[codePoint].bounds;
-    });
-    var highestMarkY = Math.max.apply(null, markBounds.map(function(bounds) {
-        return bounds.y + bounds.height;
-    }));
-    var lowestMarkY = Math.min.apply(null, markBounds.map(function(bounds) {
-        return bounds.y;
-    }));
 
     var appendPathCommands = function(path, commands) {
         commands.forEach(function(command) {
@@ -106,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             value: value,
             preview: codePoint === 32 ? '' : value,
-            name: codePoint === 32 ? 'Space' : (isCombining ? 'Dotted circle + ' + name.replace('Tagalog ', '') : value),
+            name: codePoint === 32 ? 'Space' : (isCombining ? '\u25CC' + value : value),
             unicodeName: name,
             hex: 'U+' + codePoint.toString(16).toUpperCase().padStart(4, '0'),
             decimal: codePoint,
@@ -126,6 +123,107 @@ document.addEventListener('DOMContentLoaded', function() {
     var measurement = function(context, character, property, fallback) {
         var value = context.measureText(character)[property];
         return Number.isFinite(value) && value > 0 ? value : fallback;
+    };
+
+    var textInkBounds = function(context, glyph) {
+        var metrics = context.measureText(glyph.preview);
+        var halfAdvance = metrics.width / 2;
+
+        return {
+            left: Number.isFinite(metrics.actualBoundingBoxLeft)
+                ? Math.max(0, metrics.actualBoundingBoxLeft)
+                : halfAdvance,
+            right: Number.isFinite(metrics.actualBoundingBoxRight)
+                ? Math.max(0, metrics.actualBoundingBoxRight)
+                : halfAdvance,
+            ascent: Number.isFinite(metrics.actualBoundingBoxAscent)
+                ? Math.max(0, metrics.actualBoundingBoxAscent)
+                : 0,
+            descent: Number.isFinite(metrics.actualBoundingBoxDescent)
+                ? Math.max(0, metrics.actualBoundingBoxDescent)
+                : 0
+        };
+    };
+
+    var combiningInkBounds = function(glyph) {
+        var metrics = guideMetrics(glyph);
+        var notdefHalfWidth = metrics.notdefBounds.width / 2;
+        var mark = notdefGlyph.marks[glyph.hex.slice(2)].bounds;
+
+        return {
+            left: Math.max(notdefHalfWidth, -metrics.markLeft),
+            right: Math.max(notdefHalfWidth, metrics.markRight),
+            ascent: Math.max(
+                metrics.notdefBounds.y + metrics.notdefBounds.height,
+                mark.y + mark.height
+            ),
+            descent: Math.max(-metrics.notdefBounds.y, -mark.y)
+        };
+    };
+
+    var scriptInkBounds = function(context, glyphs) {
+        var bounds = {
+            left: 1,
+            right: 1,
+            ascent: 1,
+            descent: 1
+        };
+
+        context.save();
+        context.font = notdefGlyph.unitsPerEm + 'px Nabua';
+        context.textAlign = 'center';
+        context.textBaseline = 'alphabetic';
+
+        glyphs.forEach(function(glyph) {
+            if (!glyph.preview) {
+                return;
+            }
+
+            var glyphBounds = glyph.isCombining
+                ? combiningInkBounds(glyph)
+                : textInkBounds(context, glyph);
+
+            bounds.left = Math.max(bounds.left, glyphBounds.left);
+            bounds.right = Math.max(bounds.right, glyphBounds.right);
+            bounds.ascent = Math.max(bounds.ascent, glyphBounds.ascent);
+            bounds.descent = Math.max(bounds.descent, glyphBounds.descent);
+        });
+
+        context.restore();
+        return bounds;
+    };
+
+    var scriptFit = function(context, glyphs, width, height) {
+        var referenceSize = notdefGlyph.unitsPerEm;
+        var bounds = scriptInkBounds(context, glyphs);
+        var horizontalExtent = Math.max(bounds.left, bounds.right);
+        var horizontalPadding = Math.max(12, width * 0.09);
+        var verticalPadding = Math.max(12, height * 0.06);
+        var horizontalScale = (width / 2 - horizontalPadding) / horizontalExtent;
+        var verticalScale = (height - verticalPadding * 2) / (bounds.ascent + bounds.descent);
+        var scale = Math.max(0.001, Math.min(horizontalScale, verticalScale));
+        var usedHeight = (bounds.ascent + bounds.descent) * scale;
+        var baseline = (height - usedHeight) / 2 + bounds.ascent * scale;
+
+        context.save();
+        context.font = referenceSize + 'px Nabua';
+        var ascender = measurement(context, 'l', 'actualBoundingBoxAscent', 780);
+        var capHeight = measurement(context, 'B', 'actualBoundingBoxAscent', 700);
+        var xHeight = measurement(context, 'x', 'actualBoundingBoxAscent', 500);
+        var descender = measurement(context, 'J', 'actualBoundingBoxDescent', 200);
+        context.restore();
+
+        return {
+            fontSize: referenceSize * scale,
+            baseline: baseline,
+            metricPositions: {
+                ascender: baseline - ascender * scale,
+                cap: baseline - capHeight * scale,
+                x: baseline - xHeight * scale,
+                baseline: baseline,
+                descender: baseline + descender * scale
+            }
+        };
     };
 
     var guideMetrics = function(glyph) {
@@ -174,27 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
         context.restore();
     };
 
-    var centeredGuideFontSize = function(metrics, width, height, maxFontSize, padding) {
-        var notdefHalfWidth = metrics.notdefBounds.width / 2;
-        var notdefHalfHeight = metrics.notdefBounds.height / 2;
-        var topFromCenter = Math.min(-notdefHalfHeight, -metrics.notdefCenterYOffset + metrics.markTop);
-        var bottomFromCenter = Math.max(notdefHalfHeight, -metrics.notdefCenterYOffset + metrics.markBottom);
-        var leftFromCenter = Math.min(-notdefHalfWidth, metrics.markLeft);
-        var rightFromCenter = Math.max(notdefHalfWidth, metrics.markRight);
-        var halfWidth = Math.max(1, width / 2 - padding);
-        var halfHeight = Math.max(1, height / 2 - padding);
-        var horizontalScale = Math.min(
-            halfWidth / Math.max(1, Math.abs(leftFromCenter)),
-            halfWidth / Math.max(1, rightFromCenter)
-        );
-        var verticalScale = Math.min(
-            halfHeight / Math.max(1, Math.abs(topFromCenter)),
-            halfHeight / Math.max(1, bottomFromCenter)
-        );
-
-        return Math.min(maxFontSize, metrics.referenceSize * horizontalScale, metrics.referenceSize * verticalScale);
-    };
-
     var drawCenteredGuide = function(context, glyph, width, height, fontSize) {
         var metrics = guideMetrics(glyph);
         var scale = fontSize / metrics.referenceSize;
@@ -204,30 +281,9 @@ document.addEventListener('DOMContentLoaded', function() {
         paintGuide(context, glyph, metrics, width / 2, baseline, fontSize);
     };
 
-    var fittedGuideCenterX = function(metrics, width, fontSize, padding) {
-        var scale = fontSize / metrics.referenceSize;
-        var notdefHalfWidth = metrics.notdefBounds.width / 2;
-        var leftExtent = Math.min(-notdefHalfWidth, metrics.markLeft) * scale;
-        var rightExtent = Math.max(notdefHalfWidth, metrics.markRight) * scale;
-        var centeredX = width / 2;
-        var minimumX = padding - leftExtent;
-        var maximumX = width - padding - rightExtent;
-
-        if (minimumX > maximumX) {
-            return (minimumX + maximumX) / 2;
-        }
-
-        return Math.max(minimumX, Math.min(centeredX, maximumX));
-    };
-
-    var drawBaselineGuide = function(context, glyph, centerX, baseline, fontSize) {
-        var metrics = guideMetrics(glyph);
-        paintGuide(context, glyph, metrics, centerX, baseline, fontSize);
-    };
-
     var drawCombiningCells = function() {
         var preparedCanvases = [];
-        var sharedFontSize = Infinity;
+        var sharedFontSize = 0;
 
         combiningCanvases.forEach(function(canvas) {
             var button = canvas.parentElement;
@@ -244,12 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var context = canvas.getContext('2d');
             context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
             context.clearRect(0, 0, width, height);
-            var maxFontSize = Math.min(width, height) * 0.78;
-            var padding = Math.max(4, Math.min(width, height) * 0.08);
-            var metrics = guideMetrics(canvas.glyphData);
-            var safeFontSize = centeredGuideFontSize(metrics, width, height, maxFontSize, padding);
-
-            sharedFontSize = Math.min(sharedFontSize, safeFontSize);
+            sharedFontSize = Number.parseFloat(window.getComputedStyle(button).fontSize);
             preparedCanvases.push({
                 context: context,
                 glyph: canvas.glyphData,
@@ -288,71 +339,29 @@ document.addEventListener('DOMContentLoaded', function() {
         context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         context.clearRect(0, 0, width, height);
 
-        var referenceSize = 1000;
-        context.font = referenceSize + 'px Nabua';
-        var ascender = measurement(context, 'l', 'actualBoundingBoxAscent', 780);
-        var capHeight = measurement(context, 'B', 'actualBoundingBoxAscent', 700);
-        var xHeight = measurement(context, 'x', 'actualBoundingBoxAscent', 500);
-        var descender = measurement(context, 'J', 'actualBoundingBoxDescent', 200);
-        var notdefHeight = notdefGlyph.bounds.height;
-        var topGuideExtent = (highestMarkY - notdefGlyph.bounds.y) * capHeight / notdefHeight;
-        var bottomGuideExtent = (notdefGlyph.bounds.y - lowestMarkY) * capHeight / notdefHeight;
-        var topExtent = Math.max(ascender, topGuideExtent);
-        var bottomExtent = Math.max(descender, bottomGuideExtent);
-        var topPadding = Math.max(12, height * 0.06);
-        var bottomPadding = Math.max(12, height * 0.06);
-        var scale = (height - topPadding - bottomPadding) / (topExtent + bottomExtent);
-        var fontSize = referenceSize * scale;
-        var baseline = topPadding + topExtent * scale;
-        var metricPositions = {
-            ascender: baseline - ascender * scale,
-            cap: baseline - capHeight * scale,
-            x: baseline - xHeight * scale,
-            baseline: baseline,
-            descender: baseline + descender * scale
-        };
+        var glyphs = currentSet === 'baybayin' ? baybayinGlyphs : latinGlyphs;
+        var fit = scriptFit(context, glyphs, width, height);
 
-        Object.keys(metricPositions).forEach(function(key) {
-            metricField.style.setProperty('--metric-' + key, metricPositions[key] + 'px');
+        Object.keys(fit.metricPositions).forEach(function(key) {
+            metricField.style.setProperty('--metric-' + key, fit.metricPositions[key] + 'px');
         });
 
         context.fillStyle = '#ffffff';
 
         if (currentGlyph.isCombining) {
-            var guidePadding = Math.max(8, Math.min(width, height) * 0.04);
-            var inspectorFontSize = capHeight * scale * notdefGlyph.unitsPerEm / notdefHeight;
-            var inspectorScale = inspectorFontSize / notdefGlyph.unitsPerEm;
-            var guideBaseline = baseline + notdefGlyph.bounds.y * inspectorScale;
-            var guideMetricsForGlyph = guideMetrics(currentGlyph);
-            var guideCenterX = fittedGuideCenterX(
-                guideMetricsForGlyph,
-                width,
-                inspectorFontSize,
-                guidePadding
-            );
-
-            drawBaselineGuide(
+            paintGuide(
                 context,
                 currentGlyph,
-                guideCenterX,
-                guideBaseline,
-                inspectorFontSize
+                guideMetrics(currentGlyph),
+                width / 2,
+                fit.baseline,
+                fit.fontSize
             );
         } else {
             context.textAlign = 'center';
             context.textBaseline = 'alphabetic';
-            context.font = fontSize + 'px Nabua';
-            var textWidth = context.measureText(currentGlyph.preview).width;
-            var maxWidth = width * 0.82;
-
-            context.save();
-            if (textWidth > maxWidth) {
-                context.translate(width / 2, 0);
-                context.scale(maxWidth / textWidth, 1);
-                context.translate(-width / 2, 0);
-            }
-            context.fillText(currentGlyph.preview, width / 2, baseline);
-            context.restore();
+            context.font = fit.fontSize + 'px Nabua';
+            context.fillText(currentGlyph.preview, width / 2, fit.baseline);
         }
     };
 
@@ -378,10 +387,13 @@ document.addEventListener('DOMContentLoaded', function() {
         glyphGrid.replaceChildren();
         activeButton = null;
         combiningCanvases = [];
+        layout.classList.toggle('is-baybayin', isBaybayin);
         gridTitle.textContent = title;
         glyphCount.textContent = glyphs.length + ' glyphs';
-        scriptToggle.textContent = isBaybayin ? '[Switch to Latin]' : '[Switch to Baybayin]';
-        scriptToggle.setAttribute('aria-pressed', String(isBaybayin));
+        if (scriptToggle) {
+            scriptToggle.textContent = isBaybayin ? '[Switch to Latin]' : '[Switch to Baybayin]';
+            scriptToggle.setAttribute('aria-pressed', String(isBaybayin));
+        }
 
         glyphs.forEach(function(glyph) {
             var button = document.createElement('button');
@@ -412,6 +424,17 @@ document.addEventListener('DOMContentLoaded', function() {
             glyphGrid.appendChild(button);
         });
 
+        // Preserve the full Latin grid footprint so switching scripts never
+        // moves the vertically centered composition.
+        if (isBaybayin) {
+            while (glyphGrid.children.length < latinGlyphs.length) {
+                var placeholder = document.createElement('div');
+                placeholder.className = 'glyph-cell glyph-placeholder';
+                placeholder.setAttribute('aria-hidden', 'true');
+                glyphGrid.appendChild(placeholder);
+            }
+        }
+
         var defaultIndex = isBaybayin ? 0 : glyphs.findIndex(function(glyph) {
             return glyph.decimal === 66;
         });
@@ -420,15 +443,158 @@ document.addEventListener('DOMContentLoaded', function() {
         window.requestAnimationFrame(drawCombiningCells);
     };
 
-    scriptToggle.addEventListener('click', function() {
-        layout.classList.add('is-switching');
+    if (scriptToggle) {
+        scriptToggle.addEventListener('click', function() {
+            layout.classList.add('is-switching');
 
-        window.setTimeout(function() {
-            currentSet = currentSet === 'latin' ? 'baybayin' : 'latin';
-            renderGlyphs();
-            layout.classList.remove('is-switching');
-        }, 120);
+            window.setTimeout(function() {
+                currentSet = currentSet === 'latin' ? 'baybayin' : 'latin';
+                renderGlyphs();
+                layout.classList.remove('is-switching');
+            }, 120);
+        });
+    }
+
+    if (typeTesterText && typeTesterSize) {
+        var updateTesterSize = function() {
+            var size = typeTesterSize.value + 'px';
+            typeTesterText.style.fontSize = size;
+            typeTesterSize.setAttribute('aria-valuetext', size);
+        };
+
+        typeTesterSize.addEventListener('input', updateTesterSize);
+        updateTesterSize();
+    }
+
+    if (introCarousel && introSlides.length && introDots.length) {
+        var activeIntroSlide = 0;
+
+        var showIntroSlide = function(index) {
+            activeIntroSlide = (index + introSlides.length) % introSlides.length;
+
+            introSlides.forEach(function(slide, slideIndex) {
+                var isActive = slideIndex === activeIntroSlide;
+                slide.classList.toggle('is-active', isActive);
+                slide.setAttribute('aria-hidden', String(!isActive));
+            });
+
+            introDots.forEach(function(dot, dotIndex) {
+                var isActive = dotIndex === activeIntroSlide;
+                dot.classList.toggle('is-active', isActive);
+
+                if (isActive) {
+                    dot.setAttribute('aria-current', 'true');
+                } else {
+                    dot.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        introDots.forEach(function(dot, dotIndex) {
+            dot.addEventListener('click', function() {
+                showIntroSlide(dotIndex);
+            });
+        });
+
+        if (introCarouselViewport) {
+            introCarouselViewport.addEventListener('click', function() {
+                showIntroSlide(activeIntroSlide + 1);
+            });
+
+            introCarouselViewport.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    showIntroSlide(activeIntroSlide + 1);
+                }
+            });
+        }
+
+        introCarousel.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                showIntroSlide(activeIntroSlide + 1);
+                introDots[activeIntroSlide].focus();
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                showIntroSlide(activeIntroSlide - 1);
+                introDots[activeIntroSlide].focus();
+            } else if (event.key === 'Home') {
+                event.preventDefault();
+                showIntroSlide(0);
+                introDots[activeIntroSlide].focus();
+            } else if (event.key === 'End') {
+                event.preventDefault();
+                showIntroSlide(introSlides.length - 1);
+                introDots[activeIntroSlide].focus();
+            }
+        });
+
+        showIntroSlide(0);
+    }
+
+    /* Image gallery temporarily disabled while building the reference composition.
+    var galleryItems = document.querySelectorAll('.gallery-item');
+    var galleryLightbox = document.getElementById('gallery-lightbox');
+    var galleryLightboxImage = galleryLightbox.querySelector('.gallery-lightbox-image');
+    var galleryLightboxClose = galleryLightbox.querySelector('.gallery-lightbox-close');
+    var nabuaContent = document.querySelector('.nabua-content');
+    var activeGalleryItem = null;
+
+    var updateParentLightboxState = function(isOpen) {
+        if (window.parent !== window) {
+            window.parent.postMessage({
+                type: 'nabua-image-lightbox',
+                isOpen: isOpen
+            }, window.location.origin);
+        }
+    };
+
+    var closeGalleryLightbox = function() {
+        galleryLightbox.hidden = true;
+        galleryLightboxImage.src = '';
+        galleryLightboxImage.alt = '';
+        document.body.classList.remove('is-lightbox-open');
+        nabuaContent.inert = false;
+        updateParentLightboxState(false);
+
+        if (activeGalleryItem) {
+            activeGalleryItem.focus();
+            activeGalleryItem = null;
+        }
+    };
+
+    var openGalleryLightbox = function(item) {
+        var image = item.querySelector('img');
+
+        activeGalleryItem = item;
+        galleryLightboxImage.src = image.currentSrc || image.src;
+        galleryLightboxImage.alt = image.alt;
+        galleryLightbox.hidden = false;
+        document.body.classList.add('is-lightbox-open');
+        nabuaContent.inert = true;
+        updateParentLightboxState(true);
+        galleryLightboxClose.focus();
+    };
+
+    galleryItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            openGalleryLightbox(item);
+        });
     });
+
+    galleryLightboxClose.addEventListener('click', closeGalleryLightbox);
+    galleryLightbox.addEventListener('click', function(event) {
+        if (event.target === galleryLightbox) {
+            closeGalleryLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && !galleryLightbox.hidden) {
+            closeGalleryLightbox();
+        }
+    });
+    */
 
     if ('ResizeObserver' in window) {
         new ResizeObserver(drawInspector).observe(metricField);
