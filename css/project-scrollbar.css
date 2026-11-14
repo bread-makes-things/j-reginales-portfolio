@@ -1,0 +1,36 @@
+:root {
+    --project-scrollbar-thumb: rgba(255, 255, 255, 0.55);
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+html.is-project-scrollbar-visible {
+    scrollbar-color: var(--project-scrollbar-thumb) transparent;
+}
+
+html::-webkit-scrollbar {
+    width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background-color: transparent;
+    transition: background-color 240ms ease;
+}
+
+html.is-project-scrollbar-visible::-webkit-scrollbar-thumb {
+    background-color: var(--project-scrollbar-thumb);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html::-webkit-scrollbar-thumb {
+        transition: none;
+    }
+}

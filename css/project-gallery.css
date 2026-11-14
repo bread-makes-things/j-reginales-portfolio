@@ -1,0 +1,91 @@
+.project-expandable-image {
+    cursor: zoom-in;
+    transition: opacity 160ms ease;
+}
+
+.project-expandable-image img {
+    transform: scale(1);
+    transition: transform 180ms ease;
+}
+
+.project-expandable-image:hover,
+.project-expandable-image:focus-visible {
+    opacity: 0.76;
+}
+
+.project-expandable-image:hover img,
+.project-expandable-image:focus-visible img {
+    transform: scale(1.15);
+}
+
+.project-expandable-image:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 4px;
+}
+
+body.is-project-lightbox-open {
+    overflow: hidden;
+}
+
+body.is-project-lightbox-open > main {
+    opacity: 0.58;
+    filter: blur(12px);
+    transform: scale(0.995);
+    pointer-events: none;
+}
+
+.project-image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(22, 20, 20, 0.18);
+    cursor: zoom-out;
+}
+
+.project-image-lightbox[hidden] {
+    display: none;
+}
+
+.project-image-lightbox-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0;
+    box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.45);
+    cursor: default;
+}
+
+.project-image-lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: clamp(10px, 0.85vw, 12px);
+    cursor: pointer;
+}
+
+.project-image-lightbox-close:hover,
+.project-image-lightbox-close:focus-visible {
+    color: #ff3b30;
+    text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-expandable-image,
+    .project-expandable-image img,
+    body.is-project-lightbox-open > main {
+        transition: none;
+    }
+}

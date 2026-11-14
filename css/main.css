@@ -69,7 +69,7 @@ body{
     --frame-right: 6.6vw;
     --frame-bottom: 6.4vh;
     --frame-left: 7.8vw;
-    --frame-line-color: rgba(255, 255, 255, 0.35);
+    --frame-line-color: rgba(255, 255, 255, 0.234);
     --project-ui-layer: 100;
     --portfolio-frame-layer: 1000;
     --portfolio-ui-layer: 1100;
@@ -92,6 +92,8 @@ body{
     .home-info:focus-within,
     .project-viewer-close:hover,
     .project-viewer-close:focus-visible,
+    .portfolio-clean:hover,
+    .portfolio-clean:focus-visible,
     .resume-toggle:hover,
     .resume-toggle:focus-visible
 ){
@@ -241,8 +243,9 @@ a:hover {
 
 .project-viewer iframe{
     display: block;
-    width: 100%;
+    width: 90%;
     height: 100%;
+    margin: 0% 5%;
     border: 0;
     background: #161414;
 }
@@ -273,6 +276,32 @@ a:hover {
 .project-viewer-close:focus-visible{
     color: #ff3b30;
     opacity: 1;
+    text-decoration: underline;
+}
+
+.portfolio-clean{
+    position: fixed;
+    top: calc(var(--frame-top) + 3.15rem);
+    left: var(--page-gutter);
+    z-index: var(--portfolio-ui-layer);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--portfolio-ui-color);
+    opacity: var(--portfolio-opacity);
+    font-family: "pt-mono", monospace;
+    font-size: clamp(10px, 0.75vw, 12px);
+    cursor: pointer;
+    transition: opacity 160ms ease;
+}
+
+.portfolio-clean[hidden]{
+    display: none;
+}
+
+.portfolio-clean:hover,
+.portfolio-clean:focus-visible{
     text-decoration: underline;
 }
 

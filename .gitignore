@@ -1,6 +1,9 @@
 # Local dated website snapshots
 versions/
 
+# Local projects preserved for possible restoration
+_on-hold/
+
 # macOS metadata
 .DS_Store
 **/.DS_Store

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var projectViewer = document.getElementById('project-viewer');
     var projectFrame = document.getElementById('project-frame');
     var projectViewerClose = document.querySelector('.project-viewer-close');
+    var portfolioClean = document.querySelector('.portfolio-clean');
 
     if (dateDisplay) {
         var today = new Date();
@@ -22,9 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
         dateDisplay.setAttribute('datetime', year + '-' + month + '-' + day);
     }
 
+    var updateCleanUiVisibility = function() {
+        if (portfolioClean) {
+            portfolioClean.hidden = worksProjectList.hidden && resumeSection.hidden;
+        }
+    };
+
     var setWorksOpen = function(isOpen) {
         worksProjectList.hidden = !isOpen;
         worksToggle.setAttribute('aria-expanded', String(isOpen));
+        updateCleanUiVisibility();
     };
 
     var setMenuItemActive = function(link, isActive) {
@@ -54,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             resumeSection.classList.remove('resume-fast-reveal');
         }
+
+        updateCleanUiVisibility();
     };
 
     var openProjectViewer = function(source) {
@@ -123,12 +133,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     projectViewerClose.addEventListener('click', closeProjectViewer);
 
+    if (portfolioClean) {
+        portfolioClean.addEventListener('click', function() {
+            setWorksOpen(false);
+            setMenuItemActive(worksToggle, false);
+            setResumeOpen(false);
+        });
+    }
+
     window.addEventListener('message', function(e) {
         if (
             e.origin !== window.location.origin ||
             e.source !== projectFrame.contentWindow ||
             !e.data ||
-            e.data.type !== 'nabua-image-lightbox'
+            !['project-image-lightbox', 'nabua-image-lightbox'].includes(e.data.type)
         ) {
             return;
         }
@@ -141,6 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
             closeProjectViewer();
         }
     });
+
+    updateCleanUiVisibility();
 });
 
 $(document).ready(function() {

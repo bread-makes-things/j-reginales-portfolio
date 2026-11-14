@@ -13,6 +13,7 @@
     --line: rgba(255, 255, 255, 0.35);
     --muted: rgba(255, 255, 255, 0.55);
     --active: #2f6bff;
+    --project-content-gap: clamp(2.3rem, 4.025vw, 4.6rem);
 }
 
 * {
@@ -66,15 +67,16 @@ button {
     display: grid;
     width: 100%;
     min-height: 100vh;
-    place-items: center;
+    padding-top: var(--project-content-gap);
+    place-items: start center;
 }
 
 .nabua-intro {
     display: grid;
-    align-items: center;
+    align-items: end;
     width: min(92vw, 1824px);
-    min-height: 100vh;
-    padding: clamp(4rem, 7vw, 8rem) 0;
+    min-height: calc(100vh - var(--project-content-gap) - var(--project-content-gap));
+    padding: clamp(4rem, 7vw, 8rem) 0 33px;
     border-bottom: 1px solid var(--line);
 }
 
@@ -160,8 +162,18 @@ button {
     line-height: 1.85;
 }
 
+.nabua-project-title,
 .nabua-intro-copy p {
     margin: 0;
+}
+
+.nabua-project-title {
+    font: inherit;
+    font-weight: 700;
+}
+
+.nabua-project-role {
+    margin-top: 0.05rem !important;
 }
 
 .nabua-intro-copy p + p {
@@ -676,7 +688,7 @@ body.is-lightbox-open .nabua-content {
 @media (max-width: 860px) {
     .nabua-intro {
         width: 94vw;
-        padding: 4rem 0;
+        padding: 4rem 0 33px;
     }
 
     .nabua-intro-layout {
@@ -719,7 +731,7 @@ body.is-lightbox-open .nabua-content {
     .nabua-intro {
         width: 96vw;
         min-height: auto;
-        padding: 3rem 0;
+        padding: 3rem 0 33px;
     }
 
     .intro-carousel-viewport {
