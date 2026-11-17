@@ -243,9 +243,9 @@ a:hover {
 
 .project-viewer iframe{
     display: block;
-    width: 90%;
+    width: 100%;
     height: 100%;
-    margin: 0% 5%;
+    margin: 0;
     border: 0;
     background: #161414;
 }
@@ -327,6 +327,71 @@ a:hover {
 .resume-toggle.is-selected{
     color: #2f6bff;
     text-decoration: underline;
+}
+
+.resume-download{
+    position: relative;
+    z-index: var(--portfolio-ui-layer);
+    margin: 0;
+    padding: 0;
+    color: var(--portfolio-ui-color);
+    opacity: var(--portfolio-opacity);
+    font-family: "pt-mono", monospace;
+    font-size: clamp(10px, 0.75vw, 12px);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 120ms ease, opacity 160ms ease;
+}
+
+.resume-download::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 0.75rem);
+    z-index: 1;
+    width: clamp(150px, 16vw, 220px);
+    aspect-ratio: 772 / 1000;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: #ffffff url("../images/resume/resume-page-1.png") center / cover no-repeat;
+    box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(0.35rem);
+    transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+
+.resume-download:hover::after,
+.resume-download:focus-visible::after{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.resume-download[hidden]{
+    display: none;
+}
+
+.resume-download:hover,
+.resume-download:focus-visible{
+    color: #2f6bff;
+    text-decoration: underline;
+}
+
+.resume-download-closed{
+    position: fixed;
+    left: var(--page-gutter);
+    bottom: calc(var(--frame-bottom) + 1.5rem);
+}
+
+.resume-download-open{
+    display: block;
+    width: max-content;
+    margin-top: 0.25rem;
+    opacity: 1;
+    font: inherit;
+    font-size: clamp(10px, 0.75vw, 12px);
+    pointer-events: auto;
 }
 
 .indexBody.is-project-image-open .project-viewer-close{

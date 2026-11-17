@@ -3,7 +3,7 @@
     --project-background: #161414;
     --project-type: #ffffff;
     --project-line: rgba(255, 255, 255, 0.35);
-    --project-width: min(92vw, 1824px);
+    --project-width: min(83vw, 1824px);
     --project-section-padding: clamp(4rem, 7vw, 8rem);
     --project-content-gap: clamp(2.3rem, 4.025vw, 4.6rem);
     --project-radius: clamp(1.75rem, 3vw, 3.5rem);
@@ -41,7 +41,7 @@ body {
     align-items: end;
     width: var(--project-width);
     min-height: calc(100vh - var(--project-content-gap) - var(--project-content-gap));
-    padding: var(--project-section-padding) 0 69px;
+    padding: var(--project-section-padding) 0 calc(69px + var(--project-content-gap));
     border-bottom: 1px solid var(--project-line);
 }
 
@@ -253,6 +253,7 @@ body {
 @media (max-width: 900px) {
     .project-intro {
         min-height: auto;
+        padding-bottom: 69px;
     }
 
     .project-intro-layout {

@@ -4,7 +4,7 @@
     --type: #ffffff;
     --line: rgba(255, 255, 255, 0.35);
     --muted: rgba(255, 255, 255, 0.55);
-    --width: min(92vw, 1824px);
+    --width: min(83vw, 1824px);
     --section-padding: clamp(4rem, 7vw, 8rem);
     --content-gap: clamp(2.3rem, 4.025vw, 4.6rem);
     --radius: clamp(1.75rem, 3vw, 3.5rem);
@@ -46,7 +46,7 @@ button {
     align-items: end;
     width: var(--width);
     min-height: calc(100vh - var(--content-gap) - var(--content-gap));
-    padding: var(--section-padding) 0 69px;
+    padding: var(--section-padding) 0 calc(69px + var(--content-gap));
     border-bottom: 1px solid var(--line);
 }
 
@@ -106,7 +106,7 @@ button {
 .suyat-website-section {
     grid-template-columns: minmax(18rem, 0.95fr) minmax(0, 2.25fr);
     width: var(--width);
-    padding-top: var(--content-gap);
+    padding: var(--content-gap) 0 var(--section-padding);
 }
 
 .suyat-carousel {
@@ -193,7 +193,8 @@ button {
     gap: clamp(2.5rem, 4vw, 5rem);
     align-items: start;
     width: var(--width);
-    padding-top: var(--content-gap);
+    padding: var(--content-gap) 0 69px;
+    border-bottom: 1px solid var(--line);
 }
 
 .suyat-foldout-feature-image {
@@ -205,7 +206,7 @@ button {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1.5rem, 2.75vw, 3.5rem);
     width: var(--width);
-    padding: var(--content-gap) 0 var(--section-padding);
+    padding: var(--content-gap) 0 0;
 }
 
 .suyat-square-row .suyat-frame {
@@ -246,6 +247,7 @@ button {
 @media (max-width: 900px) {
     .suyat-intro {
         min-height: auto;
+        padding-bottom: 69px;
     }
 
     .suyat-intro-layout,

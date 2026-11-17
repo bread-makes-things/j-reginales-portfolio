@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var resumeSection = document.getElementById('resume');
     var resumeClear = document.querySelector('.resume-clear');
     var resumeToggle = document.querySelector('.resume-toggle');
+    var resumeDownloadClosed = document.querySelector('.resume-download-closed');
     var worksToggle = document.querySelector('.works-toggle');
     var worksProjectList = document.getElementById('works-project-list');
     var projectLinks = document.querySelectorAll('.project-link');
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var setResumeOpen = function(isOpen) {
         resumeSection.hidden = !isOpen;
         resumeToggle.hidden = isOpen;
+        resumeDownloadClosed.hidden = isOpen;
         resumeToggle.classList.toggle('is-selected', isOpen);
         resumeToggle.setAttribute('aria-expanded', String(isOpen));
 
