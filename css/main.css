@@ -378,10 +378,12 @@ a:hover {
     text-decoration: underline;
 }
 
-.resume-download-closed{
+.resume-download.resume-download-closed{
     position: fixed;
     left: var(--page-gutter);
     bottom: calc(var(--frame-bottom) + 1.5rem);
+    color: #ffffff;
+    opacity: 1;
 }
 
 .resume-download-open{

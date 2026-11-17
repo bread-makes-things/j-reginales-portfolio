@@ -76,11 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
             item.tabIndex = 0;
         }
 
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(event) {
+            if (event.target.closest('[data-no-image-expand]')) {
+                return;
+            }
+
             openLightbox(item);
         });
 
         item.addEventListener('keydown', function(event) {
+            if (event.target.closest('[data-no-image-expand]')) {
+                return;
+            }
+
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
                 openLightbox(item);

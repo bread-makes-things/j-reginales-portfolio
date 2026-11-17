@@ -15,7 +15,7 @@
 
 .project-expandable-image:hover img,
 .project-expandable-image:focus-visible img {
-    transform: scale(1.075);
+    transform: scale(1.05);
 }
 
 .project-expandable-image:focus-visible {

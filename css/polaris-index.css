@@ -23,13 +23,20 @@
 
 .polaris-poster-label {
     position: absolute;
-    bottom: calc(100% + 0.35rem);
+    top: calc(100% + 12px);
+    bottom: auto;
     left: 0;
     width: max-content;
     font-size: calc(clamp(12px, 0.9vw, 17px) - 2pt);
     line-height: 1.25;
     letter-spacing: -0.025em;
     white-space: nowrap;
+    z-index: 1;
+    cursor: default;
+}
+
+.polaris-poster-label a {
+    cursor: pointer;
 }
 
 .polaris-poster img {
@@ -37,6 +44,14 @@
     width: auto;
     height: 100%;
     object-fit: contain;
+}
+
+.polaris-poster:has(.polaris-poster-label:hover) {
+    opacity: 1;
+}
+
+.polaris-poster:has(.polaris-poster-label:hover) img {
+    transform: scale(1);
 }
 
 .polaris-story--carousel-left {
@@ -76,4 +91,11 @@
     .polaris-story--carousel-left {
         grid-template-columns: 1fr;
     }
+}
+.C2A {
+    color: white;
+}
+
+.C2A:hover {
+    color: blue;
 }
