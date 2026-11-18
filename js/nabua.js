@@ -532,69 +532,6 @@ document.addEventListener('DOMContentLoaded', function() {
         showIntroSlide(0);
     }
 
-    /* Image gallery temporarily disabled while building the reference composition.
-    var galleryItems = document.querySelectorAll('.gallery-item');
-    var galleryLightbox = document.getElementById('gallery-lightbox');
-    var galleryLightboxImage = galleryLightbox.querySelector('.gallery-lightbox-image');
-    var galleryLightboxClose = galleryLightbox.querySelector('.gallery-lightbox-close');
-    var nabuaContent = document.querySelector('.nabua-content');
-    var activeGalleryItem = null;
-
-    var updateParentLightboxState = function(isOpen) {
-        if (window.parent !== window) {
-            window.parent.postMessage({
-                type: 'nabua-image-lightbox',
-                isOpen: isOpen
-            }, window.location.origin);
-        }
-    };
-
-    var closeGalleryLightbox = function() {
-        galleryLightbox.hidden = true;
-        galleryLightboxImage.src = '';
-        galleryLightboxImage.alt = '';
-        document.body.classList.remove('is-lightbox-open');
-        nabuaContent.inert = false;
-        updateParentLightboxState(false);
-
-        if (activeGalleryItem) {
-            activeGalleryItem.focus();
-            activeGalleryItem = null;
-        }
-    };
-
-    var openGalleryLightbox = function(item) {
-        var image = item.querySelector('img');
-
-        activeGalleryItem = item;
-        galleryLightboxImage.src = image.currentSrc || image.src;
-        galleryLightboxImage.alt = image.alt;
-        galleryLightbox.hidden = false;
-        document.body.classList.add('is-lightbox-open');
-        nabuaContent.inert = true;
-        updateParentLightboxState(true);
-        galleryLightboxClose.focus();
-    };
-
-    galleryItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-            openGalleryLightbox(item);
-        });
-    });
-
-    galleryLightboxClose.addEventListener('click', closeGalleryLightbox);
-    galleryLightbox.addEventListener('click', function(event) {
-        if (event.target === galleryLightbox) {
-            closeGalleryLightbox();
-        }
-    });
-
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && !galleryLightbox.hidden) {
-            closeGalleryLightbox();
-        }
-    });
-    */
 
     if ('ResizeObserver' in window) {
         new ResizeObserver(drawInspector).observe(metricField);

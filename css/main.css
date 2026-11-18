@@ -1,49 +1,3 @@
-@font-face {
-    font-family: "Nabua";
-    src: url("../webfonts/Nabua-2.0-Regular.otf") format("opentype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Redaction";
-    src: url("../webfonts/Redaction_100-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "RedactionReg";
-    src: url("../webfonts/Redaction-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "Redaction20";
-    src: url("../webfonts/Redaction_20-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "Redaction35";
-    src: url("../webfonts/Redaction_35-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "Redaction50";
-    src: url("../webfonts/Redaction_50-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "Redaction70";
-    src: url("../webfonts/Redaction_70-Regular.woff2") format('woff2');
-  }
-
-  @font-face {
-    font-family: "RedactionItalic";
-    src: url("../webfonts/Redaction_10-Italic.woff2") format('woff2');
-  }
-
-
-
-
 *{
     margin: 0;
     padding: 0;
@@ -51,16 +5,11 @@
 }
 
 body{
-    /* margin-top: 2vh; */
     background-color: white;
     color: black;
     overflow: hidden;
-    /* padding: 1%; */
-    box-sizing:border-box;    
-    /* padding-top: 2.9vw; */
-    /* overflow-y: scroll; */
+    box-sizing: border-box;
     align-items: center;
-
 }
 
 .indexBody{
@@ -79,6 +28,10 @@ body{
     color: var(--portfolio-ui-color);
 }
 
+.desktop-view-message{
+    display: none;
+}
+
 .indexBody.is-project-open{
     --portfolio-opacity: 0.5;
 }
@@ -92,10 +45,10 @@ body{
     .home-info:focus-within,
     .project-viewer-close:hover,
     .project-viewer-close:focus-visible,
-    .portfolio-clean:hover,
-    .portfolio-clean:focus-visible,
     .resume-toggle:hover,
-    .resume-toggle:focus-visible
+    .resume-toggle:focus-visible,
+    .resume-download:hover,
+    .resume-download:focus-visible
 ){
     --portfolio-opacity: 1;
 }
@@ -206,7 +159,6 @@ body{
     }
 }
 
-
 a:link,
 a:visited {
     color: black;
@@ -217,7 +169,6 @@ a:hover {
     text-decoration:none;
     
 }
-/* -----------------------EVENT MOUSE------------------------------- */
 
 #projects{
     position: fixed;
@@ -279,32 +230,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.portfolio-clean{
-    position: fixed;
-    top: calc(var(--frame-top) + 3.15rem);
-    left: var(--page-gutter);
-    z-index: var(--portfolio-ui-layer);
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--portfolio-ui-color);
-    opacity: var(--portfolio-opacity);
-    font-family: "pt-mono", monospace;
-    font-size: clamp(10px, 0.75vw, 12px);
-    cursor: pointer;
-    transition: opacity 160ms ease;
-}
-
-.portfolio-clean[hidden]{
-    display: none;
-}
-
-.portfolio-clean:hover,
-.portfolio-clean:focus-visible{
-    text-decoration: underline;
-}
-
 .resume-toggle{
     position: fixed;
     left: var(--page-gutter);
@@ -322,7 +247,10 @@ a:hover {
     transition: color 120ms ease, opacity 160ms ease;
 }
 
-.resume-toggle:hover,
+.resume-toggle:hover{
+    text-decoration: underline;
+}
+
 .resume-toggle:focus-visible,
 .resume-toggle.is-selected{
     color: #2f6bff;
@@ -383,14 +311,14 @@ a:hover {
     left: var(--page-gutter);
     bottom: calc(var(--frame-bottom) + 1.5rem);
     color: #ffffff;
-    opacity: 1;
+    opacity: var(--portfolio-opacity);
 }
 
 .resume-download-open{
     display: block;
     width: max-content;
     margin-top: 0.25rem;
-    opacity: 1;
+    opacity: var(--portfolio-opacity);
     font: inherit;
     font-size: clamp(10px, 0.75vw, 12px);
     pointer-events: auto;
@@ -399,29 +327,6 @@ a:hover {
 .indexBody.is-project-image-open .project-viewer-close{
     display: none;
     pointer-events: none;
-}
-
-.indexBody.is-project-open #projects > .event{
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.event{
-    z-index: 1;
-    /* border: 1px solid green; */
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.event img{
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
 }
 
 .home-intro{
@@ -535,7 +440,7 @@ a:hover {
 .home-info{
     position: fixed;
     left: var(--page-gutter);
-    bottom: calc(var(--frame-bottom) - 1.5rem);
+    bottom: calc(var(--frame-bottom) - 1.5rem + 3vh);
     z-index: var(--portfolio-ui-layer);
     width: min(72vw, 900px);
     display: grid;
@@ -615,551 +520,29 @@ a:hover {
     }
 }
 
-
-
-/* ---------------------------------------------------------------------------------------- */
-
-#titles{
-    font-style: normal;
-    text-transform: uppercase;
-    font-size: 13vw;
-    line-height: 180pt;
-    font-family: "RedactionReg";
-    font-weight: 300;
-    align-items: center;
-    text-align: center; /* Center the text horizontally */
-    z-index: -2;
-    position: fixed; /* Set position to fixed */
-    top: 50%; /* Position it at 50% from the top */
-    left: 50%; /* Position it at 50% from the left */
-    transform: translate(-50%, -50%); /
-
-}
-
-
-/* .RM{
-    font-size: 4vw;
-    font-family: "roc-grotesk";
-    font-weight: 300;
-    font-style: bold;
-    display:inline-block;
-    border: solid 1px black;
-    background-color: white;
-    position: absolute;
-    height: auto;
-
-    padding: 5pt;
-    margin-left: 1vw;
-    margin-top: 2vh;
-
-
-} */
-
-.GD{
-    text-transform: uppercase;
-    font-size: 13vw;
-    line-height: 180pt;
-    font-family: "RedactionReg";
-    font-weight: 300;
-    align-items: center;
-    text-align: center; /* Center the text horizontally */
-    z-index: -2;
-    position: fixed; /* Set position to fixed */
-    top: 50%; /* Position it at 50% from the top */
-    left: 50%; /* Position it at 50% from the left */
-    transform: translate(-50%, -50%); 
-}
-
-.name{
-    position: absolute;
-    z-index: 100000;
-    top: 88%; /* Position it at 50% from the top */
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    color: var(--portfolio-ui-color);
-    background-color:black;
-}
-
-/* .LS {
-    font-family: "roc-grotesk";
-    font-size: 3vw;
-    font-weight: 300;
-    border: 1px black solid;
-    display: inline-block;
-    height: auto;
-    position: absolute;
-    background-color: white;
-    margin-top: 73vh;
-    margin-left: 67%;
-
-
-    padding: 5pt;
-
-} */
-
-.invisible{
-    /* border: 1px solid hotpink; */
-    opacity: 1;
-}
-
-.wired{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wired video{
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.ducVideo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .ducVideo video {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .butterfly {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .butterfly video {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .renon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .renon video {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-
-section{
-    line-height: 10pt;
-    font-size: x-small;
-    width: auto;
-    /* border: solid black 1px;
-    padding: 2em;
-    background-color: white; */
-    color: black;
-    position:absolute;
-    overflow: visible;
-    opacity: 1;
-    /* border: 1px solid hotpink; */
-
-}
-
-section:hover{
-    cursor: pointer;
-}
-
-
-
-.images:hover{
-    cursor: pointer;
-}
-
-
-/* #anther_kiley{
-    height: 26vh;
-} */
-
-/* #takahashi_kuan{
-    height: 32vh;
-}
-
-#e_roon_kang{
-    height: 32vh;
-}
-
-#sebastian_aubin{
-    height: 28vh;
-} */
-
-p{
-    font-family: monospace;
-}
-
-.external_links{
-    width: 100%;
-}
-
-
-
-
-
-/*-----------------------------SUB-PAGES----------------------------------------*/
-
-.vid{
-    background-color: black;
-    border: 1px black solid;
-    width: 95%;
-    align-self: center;
-}
-
-.images img {
-    width: 95%; 
-    height: auto;
-    /* border: 2px blue solid; */
-    align-self: center;
-
-}
-
-.static-image{
-    align-self: center;
-}
-
-.gifTest{
-    display: flex;
-    flex-direction: column;
-}
-
-.images{
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-    width: 85%;
-    grid-gap: 30px;
-    height: 100%;
-    /* border: 2px blue solid; */
-}
-
-.main{
-    display: flex;
-    flex-direction: row;
-    /* margin-top: 37px; */
-    height: 100vh;
-    /* border: 1px rgb(0, 34, 255) solid; */
-}
-
-.info{
-    position: relative;
-    padding: 2vw;
-    height: 100%;
-    border-left: 1px black solid;
-    border-right: 1px black solid;
-}
-
-.text{
-    position: absolute;
-    padding-right: 2vw;
-    margin-bottom: 60px;
-    /* border: 1px blue solid; */
-
-}
-
-h3{
-    font-size: 25pt;
-}
-.date{
-    font-family: "RedactionItalic";
-    font-size: 12pt;
-}
-
-p{
-    font-size: 12pt;
-    line-height: 18pt;
-    margin-top: 10pt;
-    font-family: monospace;
-}
-
-.block{
-    width: 35%;
-    /* border: 1px rgb(255, 200, 0) solid; */
-}
-
-.closeButton{
-    /* margin-top: 50px; */
-    /* height: min-content; */
-    background: none;
-    border: none;
-    z-index: 10000;
-    color: black;
-    cursor: pointer;
-    font-size: 30pt;
-    padding-left: 1vw;
-    padding-right: 1vw;
-    padding-top: 30px;
-    /* border-bottom: #000000 1px solid; */
-    text-decoration: none;
-    top: 0;
-}
-
-.closeBox{
-    /* border: 2px solid blue; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100px;
-}
-
-.imgLinksContainer{
-    display: flex;
-    flex-direction: column;
-    grid-gap: 30px;
-    align-self: center;
-    /* border: green 1px solid; */
-    margin-bottom: 40px;
-}
-
-.imgLink{
-    width: 30px;
-    height: auto;
-}
-
-.imgLink:hover{
-    scale: 2;
-    transform: rotate(-0.1turn);
-    z-index: 90;
-}
-
-.closeButton:hover{
-    color: red;
-}
-
-.return{
-    font-size: 14pt;
-}
-
-
-/* .ducPageGif{
-    width: auto;
-    height: auto;
-    border: 1px hotpink solid;
-    padding-left: auto;
-    padding-right: auto;
-} */
-
-/* .walkingGif{
-    background-color: red;
-} */
-
-/* $('.main').css({
-    'display': 'flex',
-    'flex-direction': 'row',
-    'padding-left': '4%',
-    'padding-right': '3%',
-    'margin-top': '37px',
-    'height': '91%',   
-    'color':'blue',     
-    // 'border': '1px red solid',
-  })
-
-  $('.info').css({
-    'position': 'relative',
-    'height': '94%',
-    'padding-right': '7%',
-    // 'border': '1px rgb(255, 50, 0) solid',
-  })
-
-  $('.text').css({
-    'position': 'absolute',
-    'bottom': '0',
-  })
-
-  // $('h3').css({
-  //   'font-size': '10pt',
-  // })
-
-  // $('p').css({
-  //   'font-size': '9pt',
-  //   'line-height': '12pt',
-  // })
-
-  $('.block').css({
-    'width': '55%',
-    'z-index': '1',
-    'top': '0',
-    'left': '0',
-    'overflow': 'hidden',
-    // 'border': '1px rgb(255, 200, 0) solid',
-    'height': '100%',
-  }); */
-
-  /* $('.images').css({
-    'overflow': 'scroll',
-    'width': '45%',
-    // 'margin-top': '3vh',
-    // 'border': '1px red solid',
-  })
-
-  $("section:hover").css({
-    "cursor": "default"
-  }) */
-
-
-
-
-
-/*-----------------------------I-FRAMES----------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .image{
-    position: absolute;
-    border: 1px solid black;
-    height: 50%;
-    width: 50%;
-    z-index: 1000;
-} */
-
-/*-----------------------------this should work for all mobile devices since mobile does not have hover----------------------------------------*/
-  /* @media (hover: none){
-
-    body{
-        overflow: scroll;
-        align-items: center;
-        padding:3vw;
-    }
-    .RM{
-        position: static;
-        margin: 1vh;
-        padding: auto;
-    }
-    .GD{
-        position: static;
-        padding: 0;
-        margin: 10vh !important;
-        line-height: 250pt;
-    }
-    .LS{
-        position: static;
-        font-size: 4vw;
-        margin: 0vh;
-        margin-bottom: 4vh;
-        margin-left: 45vw;
-    }
-    section{
-        line-height: 14pt;
-        font-size: 16px;
-        width: 50vw;
-        border: solid black 1px;
-        padding: 2em;
-        background-color: white;
-        color: black;
-        position:static !important;
-        height: 20vh;
-        margin-bottom: 2vh;
-        margin-left: auto;
-        margin-right: auto;
-        transform: scale(1) !important;
+@media (max-width: 900px){
+    .home-intro,
+    .home-menu,
+    #projects,
+    .project-viewer-close,
+    .resume-toggle,
+    .resume-download,
+    .home-info{
+        display: none;
     }
 
-    #anther_kiley{
-    height: auto !important;
+    .desktop-view-message{
+        position: fixed;
+        inset: 0;
+        z-index: var(--portfolio-ui-layer);
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: var(--page-gutter);
+        color: var(--portfolio-ui-color);
+        font-family: "pt-mono", monospace;
+        font-size: clamp(12px, 0.9vw, 17px);
+        line-height: 1.3;
+        text-align: center;
     }
-
-    #takahashi_kuan{
-        height: auto !important;
-    }
-
-    #e_roon_kang{
-        height: auto !important;
-    }
-
-    #sebastian_aubin{
-        height: auto !important;
-    }
-
-    } */
-
-    /* --------------------------if smaller than 1050px----------------------------- */
-
-  /* @media (max-width: 1200px) {
-    .GD{
-        margin-top: 20vh;
-        line-height: 120pt;
-    }
-  } */
-
-    /*---------------------------- if smaller than 750 px---------------------- */
-
-    /* @media (max-width: 750px) {
-
-    body{
-        overflow: scroll;
-        align-items: center;
-    }
-    .RM{
-        position: static;
-        margin: 1vh;
-        padding: auto;
-    }
-    .GD{
-        font-size: 21vw;
-        line-height: 90pt;
-        position: static;
-        padding: 0;
-        margin: 1vh !important;
-    }
-    .LS{
-        position: static;
-        margin: 0vh;
-        font-size: 4vw;
-        margin-bottom: 1vh;
-        margin-left: 45vw;
-    }
-    section{
-        line-height: 14pt;
-        font-size: 16px;
-        width: 80vw;
-        border: solid black 1px;
-        padding: 2em;
-        background-color: white;
-        color: black;
-        position:static !important;
-        height: 20vh;
-        margin-bottom: 2vh;
-        margin-left: auto;
-        margin-right: auto;
-        transform: scale(1) !important; 
-    }
-
-    #anther_kiley{
-    height: auto !important;
-    }
-
-    #takahashi_kuan{
-        height: auto !important;
-    }
-
-    #e_roon_kang{
-        height: auto !important;
-    }
-
-    #sebastian_aubin{
-        height: auto !important;
-    }
-
-    }
-
-
-    @media (max-width: 400px) {
-        .GD{
-            line-height: 50pt;
-        }
-      }
- */
+}
