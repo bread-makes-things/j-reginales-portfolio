@@ -280,7 +280,7 @@ a:hover {
     width: clamp(150px, 16vw, 220px);
     aspect-ratio: 772 / 1000;
     border: 1px solid rgba(255, 255, 255, 0.4);
-    background: #ffffff url("../images/resume/resume-page-1.png") center / cover no-repeat;
+    background: #ffffff url("../images/resume/resume-page-1.png?v=20261118-2") center / cover no-repeat;
     box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.3);
     opacity: 0;
     visibility: hidden;
